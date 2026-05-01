@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greenfield Academy | Nurturing Minds, Growing Futures</title>
+    <meta name="description" content="Greenfield Academy is a vibrant learning community focused on academic excellence, character formation, and future-ready education.">
+    <meta name="keywords" content="Greenfield Academy, school, admissions, academics, education">
+    <meta property="og:title" content="Greenfield Academy">
+    <meta property="og:description" content="Nurturing Minds, Growing Futures">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --clr-primary: #3A7D44;
+            --clr-primary-dark: #2D6235;
+            --clr-primary-light: #5B9A5F;
+            --clr-accent: #F0A04B;
+            --clr-accent-hover: #D98A35;
+            --clr-header-bg: #FFFFFF;
+            --clr-footer-bg: #263028;
+            --clr-bg-light: #FAFAF7;
+            --clr-bg-warm: #FDFCF8;
+            --clr-white: #FFFFFF;
+            --clr-text-dark: #2D3436;
+            --clr-text-medium: #4A4F52;
+            --clr-text-light: #6B7073;
+            --clr-border: #E0E0D8;
+            --clr-shadow: rgba(0, 0, 0, 0.07);
+            --clr-shadow-hover: rgba(0, 0, 0, 0.14);
+            --clr-overlay: rgba(0, 0, 0, 0.58);
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --radius-sm: 8px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-pill: 50px;
+            --transition-fast: 0.2s ease;
+            --transition-smooth: 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            --header-height: 72px;
+            --max-width: 1200px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; scroll-padding-top: var(--header-height); font-size: 16px; }
+        body { font-family: var(--font-body); color: var(--clr-text-dark); background: var(--clr-white); line-height: 1.7; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); color: var(--clr-text-dark); line-height: 1.25; }
+        h2 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+        h3 { font-size: 1.25rem; }
+        p { color: var(--clr-text-medium); margin-bottom: 1rem; }
+        a { color: var(--clr-primary); text-decoration: none; }
+        img { max-width: 100%; height: auto; display: block; }
+        ul { list-style: none; padding: 0; }
+        button, input, textarea, select { font-family: inherit; }
+        .container { width: 100%; max-width: var(--max-width); margin: 0 auto; padding: 0 24px; }
+        .section { padding: 88px 0; }
+        .section--alt { background-color: var(--clr-bg-light); }
+        .section__header { text-align: center; margin-bottom: 52px; }
+        .section__header h2 { position: relative; display: inline-block; }
+        .section__header h2::after { content: ''; display: block; width: 62px; height: 4px; background: var(--clr-accent); margin: 12px auto 0; border-radius: 3px; }
+        .section__subtitle { max-width: 650px; margin: 8px auto 0; color: var(--clr-text-light); font-size: 1.04rem; }
+        .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font-heading); font-weight: 600; font-size: 0.94rem; padding: 13px 28px; border-radius: var(--radius-pill); cursor: pointer; border: 2px solid transparent; transition: all var(--transition-smooth); white-space: nowrap; text-align: center; }
+        .btn--primary { background: var(--clr-primary); color: var(--clr-white); border-color: var(--clr-primary); }
+        .btn--primary:hover { background: var(--clr-primary-dark); border-color: var(--clr-primary-dark); color: var(--clr-white); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(58, 125, 68, 0.3); }
+        .btn--outline { background: transparent; color: var(--clr-white); border-color: var(--clr-white); }
+        .btn--outline:hover { background: var(--clr-white); color: var(--clr-primary-dark); transform: translateY(-3px); }
+        .btn--accent { background: var(--clr-accent); color: var(--clr-white); border-color: var(--clr-accent); }
+        .btn--accent:hover { background: var(--clr-accent-hover); border-color: var(--clr-accent-hover); color: var(--clr-white); transform: translateY(-3px); }
+        .btn--secondary { background: #eef3ee; color: var(--clr-primary-dark); border-color: #d8e4d8; }
+        .btn--secondary:hover { background: #e3eee3; color: var(--clr-primary-dark); }
+        .btn--danger { background: #c62828; color: #fff; border-color: #c62828; }
+        .btn--sm { padding: 8px 16px; font-size: 0.82rem; }
+        .header { position: sticky; top: 0; z-index: 1000; background: var(--clr-header-bg); box-shadow: 0 1px 6px var(--clr-shadow); height: var(--header-height); transition: box-shadow var(--transition-smooth), background var(--transition-fast); }
+        .header--scrolled { box-shadow: 0 3px 18px var(--clr-shadow-hover); }
+        .header__inner { height: var(--header-height); max-width: var(--max-width); margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+        .header__logo { display: flex; align-items: center; gap: 10px; font-family: var(--font-heading); font-weight: 800; font-size: 1.4rem; color: var(--clr-primary-dark); }
+        .header__logo-img { width: 44px; height: 44px; border-radius: var(--radius-sm); object-fit: cover; display: none; }
+        .header__logo-icon { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: linear-gradient(135deg, var(--clr-primary), var(--clr-primary-light)); color: var(--clr-white); border-radius: var(--radius-sm); font-size: 1.25rem; font-weight: 800; }
+        .header__nav-list { display: flex; align-items: center; gap: 4px; }
+        .header__nav-link { display: block; padding: 8px 13px; font-family: var(--font-heading); font-weight: 500; font-size: 0.9rem; color: var(--clr-text-dark); border-radius: var(--radius-pill); transition: all var(--transition-fast); }
+        .header__nav-link:hover { background: rgba(58, 125, 68, 0.1); color: var(--clr-primary-dark); }
+        .hamburger { display: none; flex-direction: column; justify-content: center; align-items: center; width: 44px; height: 44px; background: none; border: none; cursor: pointer; padding: 8px; gap: 6px; z-index: 1100; border-radius: var(--radius-sm); }
+        .hamburger__bar { display: block; width: 26px; height: 2.5px; background: var(--clr-text-dark); border-radius: 3px; transition: all var(--transition-smooth); }
+        .hamburger.active .hamburger__bar:nth-child(1) { transform: translateY(8.5px) rotate(45deg); }
+        .hamburger.active .hamburger__bar:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.active .hamburger__bar:nth-child(3) { transform: translateY(-8.5px) rotate(-45deg); }
+        .mobile-nav { display: none; position: absolute; top: var(--header-height); left: 0; right: 0; background: var(--clr-white); box-shadow: 0 10px 30px var(--clr-shadow-hover); flex-direction: column; padding: 12px 20px 24px; border-radius: 0 0 var(--radius-lg) var(--radius-lg); }
+        .mobile-nav.active { display: flex; }
+        .mobile-nav__link { display: block; padding: 13px 18px; font-family: var(--font-heading); font-weight: 500; color: var(--clr-text-dark); border-radius: var(--radius-sm); }
+        .mobile-nav__link:hover { background: rgba(58, 125, 68, 0.1); color: var(--clr-primary-dark); }
+        .hero { position: relative; min-height: 85vh; display: flex; align-items: center; justify-content: center; text-align: center; background: linear-gradient(155deg, var(--clr-primary-dark), var(--clr-primary) 45%, var(--clr-primary-light)); overflow: hidden; color: var(--clr-white); }
+        .hero.has-image { background-size: cover; background-position: center; }
+        .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 25% 20%, rgba(255,255,255,0.12), transparent 55%), linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.36)); pointer-events: none; }
+        .hero__content { position: relative; z-index: 2; max-width: 760px; padding: 40px 24px; }
+        .hero__tag { display: inline-block; font-family: var(--font-heading); font-weight: 600; font-size: 0.9rem; letter-spacing: 2px; text-transform: uppercase; background: rgba(255,255,255,0.18); padding: 7px 18px; border-radius: var(--radius-pill); margin-bottom: 20px; backdrop-filter: blur(4px); }
+        .hero__title { font-size: 3.2rem; font-weight: 800; margin-bottom: 16px; color: var(--clr-white); }
+        .hero__subtitle { font-size: 1.2rem; color: rgba(255,255,255,0.92); margin-bottom: 36px; }
+        .hero__cta-group { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; }
+        .cards-grid, .academics-grid, .news-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 26px; }
+        .card, .acad-card, .news-card, .event-card { background: var(--clr-white); border-radius: var(--radius-lg); box-shadow: 0 4px 16px var(--clr-shadow); transition: all var(--transition-smooth); overflow: hidden; }
+        .card:hover, .acad-card:hover, .news-card:hover, .event-card:hover { transform: translateY(-6px); box-shadow: 0 14px 36px var(--clr-shadow-hover); }
+        .card { padding: 34px 26px 28px; text-align: center; }
+        .card__icon, .acad-card__icon { display: inline-flex; align-items: center; justify-content: center; width: 66px; height: 66px; border-radius: 50%; font-size: 2rem; margin-bottom: 16px; background: rgba(58,125,68,0.1); }
+        .card__title, .acad-card__title { margin-bottom: 8px; }
+        .principal { display: grid; grid-template-columns: 320px 1fr; gap: 34px; align-items: center; background: var(--clr-white); border-radius: var(--radius-lg); box-shadow: 0 6px 22px var(--clr-shadow); padding: 28px; margin-top: 34px; }
+        .principal__photo { width: 100%; min-height: 270px; background: #eaf0ea; border-radius: var(--radius-md); object-fit: cover; }
+        .principal__placeholder { display: flex; align-items: center; justify-content: center; min-height: 270px; background: #eaf0ea; border-radius: var(--radius-md); font-family: var(--font-heading); font-weight: 700; color: var(--clr-primary-dark); }
+        .principal__label { color: var(--clr-accent); font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1.5px; }
+        .acad-card { padding: 30px 24px 26px; text-align: center; border-top: 5px solid var(--clr-primary); }
+        .admissions-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 44px; align-items: start; }
+        .steps-list { counter-reset: step; padding: 0; }
+        .steps-list li { counter-increment: step; position: relative; padding-left: 60px; margin-bottom: 26px; color: var(--clr-text-medium); }
+        .steps-list li::before { content: counter(step); position: absolute; left: 0; top: -2px; width: 42px; height: 42px; background: var(--clr-primary); color: var(--clr-white); font-family: var(--font-heading); font-weight: 700; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .steps-list li strong { display: block; font-family: var(--font-heading); color: var(--clr-text-dark); margin-bottom: 2px; }
+        .form-card { background: var(--clr-white); border-radius: var(--radius-lg); padding: 32px 28px; box-shadow: 0 6px 22px var(--clr-shadow); border: 1px solid var(--clr-border); }
+        .form-card h3 { text-align: center; margin-bottom: 20px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label, .admin-field label { display: block; font-weight: 700; font-size: 0.87rem; margin-bottom: 5px; color: var(--clr-text-dark); font-family: var(--font-heading); }
+        .form-group input, .form-group textarea, .form-group select, .admin-field input, .admin-field textarea, .admin-field select { width: 100%; padding: 11px 14px; border: 2px solid var(--clr-border); border-radius: var(--radius-sm); font-size: 0.94rem; background: var(--clr-bg-warm); resize: vertical; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus, .admin-field input:focus, .admin-field textarea:focus, .admin-field select:focus { outline: none; border-color: var(--clr-primary); box-shadow: 0 0 0 4px rgba(58,125,68,0.1); background: var(--clr-white); }
+        .form-success, .form-error { display: none; text-align: center; padding: 14px; border-radius: var(--radius-sm); margin-top: 12px; font-weight: 700; font-family: var(--font-heading); }
+        .form-success { background: #E8F5E9; color: var(--clr-primary-dark); }
+        .form-error { background: #FFEBEE; color: #c62828; }
+        .form-success.visible, .form-error.visible { display: block; }
+        .events-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+        .event-card__image, .news-card__image { width: 100%; height: 170px; object-fit: cover; background: #e8ede8; }
+        .event-card__date-badge { text-align: center; padding: 14px 10px; font-family: var(--font-heading); color: var(--clr-white); background: var(--clr-primary); }
+        .event-card__day { font-size: 2.25rem; font-weight: 800; line-height: 1; }
+        .event-card__month { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-top: 2px; }
+        .event-card__body, .news-card__body { padding: 20px 18px 22px; }
+        .event-card__title, .news-card__title { font-size: 1.04rem; margin-bottom: 6px; }
+        .event-card__desc, .news-card__desc { font-size: 0.9rem; color: var(--clr-text-medium); }
+        .news-card__date { color: var(--clr-accent); font-weight: 700; font-size: 0.82rem; font-family: var(--font-heading); margin-bottom: 8px; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .gallery-item { position: relative; border-radius: var(--radius-md); overflow: hidden; box-shadow: 0 3px 10px var(--clr-shadow); cursor: pointer; }
+        .gallery-item img { width: 100%; height: 260px; object-fit: cover; transition: transform var(--transition-smooth); }
+        .gallery-item:hover img { transform: scale(1.05); }
+        .gallery-item__caption { position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 14px; color: #fff; background: linear-gradient(transparent, rgba(0,0,0,0.72)); font-weight: 700; font-size: 0.9rem; }
+        .contact-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .contact-info { display: flex; flex-direction: column; gap: 18px; }
+        .contact-info__item { display: flex; align-items: flex-start; gap: 14px; color: var(--clr-text-medium); }
+        .contact-info__icon { flex-shrink: 0; width: 40px; height: 40px; background: rgba(58,125,68,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .map-frame { width: 100%; min-height: 260px; border: 0; border-radius: var(--radius-md); box-shadow: 0 4px 16px var(--clr-shadow); background: #e8ede8; }
+        .map-placeholder { min-height: 260px; border-radius: var(--radius-md); background: #e8ede8; display: flex; align-items: center; justify-content: center; color: var(--clr-text-light); text-align: center; padding: 20px; border: 2px dashed #c8d4c8; }
+        .footer { background: var(--clr-footer-bg); color: #c8d4c8; padding: 50px 0 24px; }
+        .footer__grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; margin-bottom: 40px; }
+        .footer h4 { color: var(--clr-white); margin-bottom: 16px; }
+        .footer p, .footer li, .footer a { color: #bcc8bc; font-size: 0.9rem; }
+        .footer a:hover { color: var(--clr-accent); }
+        .footer__social { display: flex; gap: 12px; flex-wrap: wrap; }
+        .footer__social a { display: inline-flex; align-items: center; justify-content: center; min-width: 40px; height: 40px; padding: 0 10px; border-radius: 50px; background: rgba(255,255,255,0.08); color: #d0d8d0; font-weight: 700; font-size: 0.8rem; }
+        .footer__bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; text-align: center; }
+        .admin-open-btn { margin-top: 12px; background: rgba(255,255,255,0.08); color: #d0d8d0; border: 1px solid rgba(255,255,255,0.16); padding: 8px 14px; border-radius: 30px; cursor: pointer; }
+        .back-to-top { position: fixed; bottom: 30px; right: 30px; z-index: 999; width: 48px; height: 48px; border-radius: 50%; background: var(--clr-primary); color: var(--clr-white); border: none; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(58,125,68,0.35); opacity: 0; pointer-events: none; transform: translateY(16px); transition: all var(--transition-smooth); }
+        .back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        .lightbox, .admin-modal { display: none; position: fixed; inset: 0; z-index: 3000; background: var(--clr-overlay); align-items: center; justify-content: center; padding: 26px; }
+        .lightbox.active, .admin-modal.active { display: flex; }
+        .lightbox__img { max-width: 90vw; max-height: 84vh; border-radius: var(--radius-md); box-shadow: 0 20px 50px rgba(0,0,0,0.42); }
+        .modal-close { position: absolute; top: 18px; right: 24px; background: var(--clr-white); border: none; width: 42px; height: 42px; border-radius: 50%; font-size: 1.35rem; cursor: pointer; z-index: 3001; }
+        .admin-dialog { width: min(1180px, 96vw); max-height: 92vh; overflow: hidden; background: var(--clr-white); border-radius: var(--radius-lg); box-shadow: 0 24px 70px rgba(0,0,0,0.32); display: flex; flex-direction: column; }
+        .admin-header { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 22px; border-bottom: 1px solid var(--clr-border); background: #f8faf8; }
+        .admin-header h2 { font-size: 1.25rem; margin: 0; }
+        .admin-status { font-size: 0.85rem; color: var(--clr-text-light); }
+        .admin-body { overflow: auto; padding: 20px; }
+        .admin-login { max-width: 430px; margin: 26px auto; }
+        .admin-shell { display: none; grid-template-columns: 230px 1fr; gap: 20px; }
+        .admin-shell.active { display: grid; }
+        .admin-tabs { background: #f5f8f5; border: 1px solid var(--clr-border); border-radius: var(--radius-md); padding: 10px; align-self: start; position: sticky; top: 0; }
+        .admin-tab { width: 100%; display: block; padding: 10px 12px; border: none; background: transparent; text-align: left; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; color: var(--clr-text-medium); }
+        .admin-tab.active, .admin-tab:hover { background: var(--clr-primary); color: var(--clr-white); }
+        .admin-panel { display: none; }
+        .admin-panel.active { display: block; }
+        .admin-card { border: 1px solid var(--clr-border); border-radius: var(--radius-md); padding: 18px; margin-bottom: 18px; background: #fff; }
+        .admin-card h3 { margin-bottom: 12px; }
+        .admin-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+        .admin-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+        .admin-field--full { grid-column: 1 / -1; }
+        .admin-actions { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
+        .admin-message { display: none; padding: 12px 14px; border-radius: var(--radius-sm); margin-bottom: 14px; font-weight: 700; }
+        .admin-message.visible { display: block; }
+        .admin-message.success { background: #E8F5E9; color: #1b5e20; }
+        .admin-message.error { background: #FFEBEE; color: #b71c1c; }
+        .admin-list { display: grid; gap: 10px; }
+        .admin-list-item { border: 1px solid var(--clr-border); border-radius: var(--radius-sm); padding: 12px; background: #fbfcfb; }
+        .record-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        .record-table th, .record-table td { border-bottom: 1px solid var(--clr-border); padding: 10px 8px; text-align: left; vertical-align: top; }
+        .record-table th { background: #f5f8f5; font-family: var(--font-heading); font-size: 0.82rem; }
+        .badge { display: inline-flex; align-items: center; border-radius: 50px; padding: 2px 8px; background: #eef3ee; color: var(--clr-primary-dark); font-size: 0.75rem; font-weight: 700; }
+        .hidden { display: none !important; }
+        @media (max-width: 1023px) {
+            h2 { font-size: 1.8rem; }
+            .hero__title { font-size: 2.4rem; }
+            .cards-grid, .academics-grid, .news-grid { grid-template-columns: repeat(2, 1fr); }
+            .admissions-wrapper, .contact-wrapper, .principal { grid-template-columns: 1fr; }
+            .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .footer__grid { grid-template-columns: repeat(2, 1fr); }
+            .admin-shell { grid-template-columns: 1fr; }
+            .admin-tabs { position: static; display: flex; flex-wrap: wrap; }
+            .admin-tab { width: auto; }
+        }
+        @media (max-width: 767px) {
+            :root { --header-height: 64px; }
+            .header__nav { display: none; }
+            .hamburger { display: flex; }
+            .hero { min-height: 75vh; }
+            .hero__title { font-size: 1.9rem; }
+            .hero__cta-group { flex-direction: column; align-items: center; }
+            .cards-grid, .academics-grid, .news-grid, .gallery-grid, .footer__grid, .admin-grid, .admin-grid--3 { grid-template-columns: 1fr; }
+            .gallery-item img { height: 220px; }
+            .section { padding: 54px 0; }
+            .admin-dialog { width: 98vw; max-height: 94vh; }
+            .admin-header { align-items: flex-start; flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <header class="header" id="header" role="banner">
+        <div class="header__inner">
+            <a href="#home" class="header__logo" aria-label="School home">
+                <img src="" alt="School logo" class="header__logo-img" id="siteLogoImg">
+                <span class="header__logo-icon" id="siteLogoText">GA</span>
+                <span id="siteNameText">Greenfield Academy</span>
+            </a>
+            <nav class="header__nav" aria-label="Primary navigation">
+                <ul class="header__nav-list">
+                    <li><a href="#home" class="header__nav-link">Home</a></li>
+                    <li><a href="#about" class="header__nav-link">About</a></li>
+                    <li><a href="#academics" class="header__nav-link">Academics</a></li>
+                    <li><a href="#admissions" class="header__nav-link">Admissions</a></li>
+                    <li><a href="#events" class="header__nav-link">Events</a></li>
+                    <li><a href="#announcements" class="header__nav-link">News</a></li>
+                    <li><a href="#gallery" class="header__nav-link">Gallery</a></li>
+                    <li><a href="#contact" class="header__nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu" aria-expanded="false"><span class="hamburger__bar"></span><span class="hamburger__bar"></span><span class="hamburger__bar"></span></button>
+        </div>
+        <nav class="mobile-nav" id="mobileNav" aria-label="Mobile navigation">
+            <a href="#home" class="mobile-nav__link">Home</a>
+            <a href="#about" class="mobile-nav__link">About</a>
+            <a href="#academics" class="mobile-nav__link">Academics</a>
+            <a href="#admissions" class="mobile-nav__link">Admissions</a>
+            <a href="#events" class="mobile-nav__link">Events</a>
+            <a href="#announcements" class="mobile-nav__link">News</a>
+            <a href="#gallery" class="mobile-nav__link">Gallery</a>
+            <a href="#contact" class="mobile-nav__link">Contact</a>
+        </nav>
+    </header>
+
+    <main id="home">
+        <section class="hero" id="heroSection" aria-labelledby="heroHeading">
+            <div class="hero__content">
+                <p class="hero__tag" id="heroTag">Est. 1995 • Excellence in Education</p>
+                <h1 class="hero__title" id="heroHeading">Nurturing Minds,<br>Growing Futures</h1>
+                <p class="hero__subtitle" id="heroSubtitle">Welcome to Greenfield Academy, a vibrant learning community where curiosity thrives, character blooms, and every student is empowered to reach their fullest potential.</p>
+                <div class="hero__cta-group">
+                    <a href="#admissions" class="btn btn--primary" id="heroPrimaryCta">Admissions Open</a>
+                    <a href="#gallery" class="btn btn--outline" id="heroSecondaryCta">Virtual Tour</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="section section--alt" id="about" aria-labelledby="aboutHeading">
+            <div class="container">
+                <div class="section__header">
+                    <h2 id="aboutHeading">About Greenfield Academy</h2>
+                    <p class="section__subtitle" id="aboutSubtitle">For nearly three decades, we have been dedicated to fostering academic excellence, personal growth, and a lifelong love of learning.</p>
+                </div>
+                <div class="cards-grid" id="aboutCards"></div>
+                <div class="principal" id="principalSection"></div>
+            </div>
+        </section>
+
+        <section class="section" id="academics" aria-labelledby="academicsHeading">
+            <div class="container">
+                <div class="section__header">
+                    <h2 id="academicsHeading">Our Curriculum</h2>
+                    <p class="section__subtitle" id="academicsSubtitle">A rich, balanced programme designed to spark curiosity and develop well-rounded, future-ready learners.</p>
+                </div>
+                <div class="academics-grid" id="academicsGrid"></div>
+            </div>
+        </section>
+
+        <section class="section section--alt" id="admissions" aria-labelledby="admissionsHeading">
+            <div class="container">
+                <div class="section__header">
+                    <h2 id="admissionsHeading">Admissions</h2>
+                    <p class="section__subtitle" id="admissionsSubtitle">Joining our school is the first step on an inspiring educational journey.</p>
+                </div>
+                <div class="admissions-wrapper">
+                    <div>
+                        <ol class="steps-list" id="admissionsSteps"></ol>
+                        <div style="text-align:center; margin-top: 20px;"><a class="btn btn--accent" id="prospectusBtn" href="#" target="_blank" rel="noopener">Download Prospectus</a></div>
+                    </div>
+                    <div class="form-card">
+                        <h3>Enquire Now</h3>
+                        <form id="admissionsForm" aria-label="Admissions enquiry form" novalidate>
+                            <div class="form-group"><label for="parentName">Parent's Name *</label><input type="text" id="parentName" name="parent_name" required></div>
+                            <div class="form-group"><label for="studentName">Student's Name *</label><input type="text" id="studentName" name="student_name" required></div>
+                            <div class="form-group"><label for="admissionsEmail">Email Address *</label><input type="email" id="admissionsEmail" name="email" required></div>
+                            <div class="form-group"><label for="admissionsPhone">Phone Number</label><input type="tel" id="admissionsPhone" name="phone"></div>
+                            <div class="form-group"><label for="admissionsMessage">Message</label><textarea id="admissionsMessage" name="message" rows="3"></textarea></div>
+                            <button type="submit" class="btn btn--primary" style="width:100%;">Submit Enquiry</button>
+                        </form>
+                        <div class="form-success" id="admissionsSuccess" role="status">Thank you. We will be in touch soon.</div>
+                        <div class="form-error" id="admissionsError" role="alert">Unable to submit your enquiry. Please try again.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="events" aria-labelledby="eventsHeading">
+            <div class="container">
+                <div class="section__header">
+                    <h2 id="eventsHeading">Upcoming Events</h2>
+                    <p class="section__subtitle" id="eventsSubtitle">Stay connected with our vibrant school community.</p>
+                </div>
+                <div class="events-grid" id="eventsGrid" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <section class="section section--alt" id="announcements" aria-labelledby="newsHeading">
+            <div class="container">
+                <div class="section__header">
+                    <h2 id="newsHeading">News & Announcements</h2>
+                    <p class="section__subtitle" id="newsSubtitle">Important notices, admission updates, and school community news.</p>
+                </div>
+                <div class="news-grid" id="newsGrid" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <section class="section" id="gallery" aria-labelledby="galleryHeading">
+            <div class="container">
+                <div class="section__header">
+                    <h2 id="galleryHeading">Campus Gallery</h2>
+                    <p class="section__subtitle" id="gallerySubtitle">Take a peek inside our campus. Click any image to view it full-size.</p>
+                </div>
+                <div class="gallery-grid" id="galleryGrid" aria-live="polite"></div>
+            </div>
+        </section>
+
+        <section class="section section--alt" id="contact" aria-labelledby="contactHeading">
+            <div class="container">
+                <div class="section__header">
+                    <h2 id="contactHeading">Get In Touch</h2>
+                    <p class="section__subtitle" id="contactSubtitle">We would love to hear from you. Reach out with any questions.</p>
+                </div>
+                <div class="contact-wrapper">
+                    <div class="contact-info" id="contactInfo"></div>
+                    <div class="form-card">
+                        <h3>Send Us a Message</h3>
+                        <form id="contactForm" aria-label="Contact form" novalidate>
+                            <div class="form-group"><label for="contactName">Your Name *</label><input type="text" id="contactName" name="name" required></div>
+                            <div class="form-group"><label for="contactEmail">Email Address *</label><input type="email" id="contactEmail" name="email" required></div>
+                            <div class="form-group"><label for="contactSubject">Subject</label><input type="text" id="contactSubject" name="subject"></div>
+                            <div class="form-group"><label for="contactMessage">Message *</label><textarea id="contactMessage" name="message" rows="3" required></textarea></div>
+                            <button type="submit" class="btn btn--primary" style="width:100%;">Send Message</button>
+                        </form>
+                        <div class="form-success" id="contactSuccess" role="status">Thank you. Your message has been sent.</div>
+                        <div class="form-error" id="contactError" role="alert">Unable to send your message. Please try again.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer__grid">
+                <div><h4 id="footerSchoolName">Greenfield Academy</h4><p id="footerDescription">Nurturing minds, growing futures.</p><button class="admin-open-btn" id="adminOpenBtn" type="button">School Admin</button></div>
+                <div><h4>Quick Links</h4><ul class="footer__links"><li><a href="#about">About Us</a></li><li><a href="#academics">Curriculum</a></li><li><a href="#admissions">Admissions</a></li><li><a href="#events">Events</a></li><li><a href="#announcements">News</a></li><li><a href="#gallery">Gallery</a></li></ul></div>
+                <div><h4>Follow Us</h4><div class="footer__social" id="footerSocial"></div></div>
+            </div>
+            <div class="footer__bottom"><p id="footerBottomText">© 2026 Greenfield Academy. All rights reserved.</p></div>
+        </div>
+    </footer>
+
+    <div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Image lightbox"><button class="modal-close" id="lightboxClose" aria-label="Close lightbox">×</button><img src="" alt="" class="lightbox__img" id="lightboxImg"></div>
+    <button class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">↑</button>
+
+    <div class="admin-modal" id="adminModal" aria-hidden="true" role="dialog" aria-label="School Admin Website Editor">
+        <div class="admin-dialog">
+            <button class="modal-close" id="adminCloseBtn" aria-label="Close admin editor">×</button>
+            <div class="admin-header"><div><h2>School Admin Website Editor</h2><div class="admin-status" id="adminStatus">Sign in to manage this website.</div></div><div class="admin-actions"><button class="btn btn--secondary btn--sm hidden" id="adminRefreshBtn" type="button">Refresh</button><button class="btn btn--secondary btn--sm hidden" id="adminSignOutBtn" type="button">Sign Out</button></div></div>
+            <div class="admin-body">
+                <div class="admin-message" id="adminMessage"></div>
+                <div class="admin-login" id="adminLoginBox">
+                    <div class="admin-card">
+                        <h3>Admin Login</h3>
+                        <div class="admin-field"><label for="adminEmail">Email</label><input type="email" id="adminEmail" autocomplete="username"></div>
+                        <div class="admin-field" style="margin-top:12px;"><label for="adminPassword">Password</label><input type="password" id="adminPassword" autocomplete="current-password"></div>
+                        <div class="admin-actions"><button class="btn btn--primary" id="adminLoginBtn" type="button">Login</button></div>
+                    </div>
+                </div>
+                <div class="admin-shell" id="adminShell">
+                    <aside class="admin-tabs" id="adminTabs">
+                        <button class="admin-tab active" data-panel="panel-identity" type="button">Identity</button>
+                        <button class="admin-tab" data-panel="panel-theme" type="button">Theme</button>
+                        <button class="admin-tab" data-panel="panel-home" type="button">Homepage</button>
+                        <button class="admin-tab" data-panel="panel-about" type="button">About</button>
+                        <button class="admin-tab" data-panel="panel-academics" type="button">Academics</button>
+                        <button class="admin-tab" data-panel="panel-admissions" type="button">Admissions</button>
+                        <button class="admin-tab" data-panel="panel-events" type="button">Events</button>
+                        <button class="admin-tab" data-panel="panel-gallery" type="button">Gallery</button>
+                        <button class="admin-tab" data-panel="panel-news" type="button">News</button>
+                        <button class="admin-tab" data-panel="panel-enquiries" type="button">Enquiries</button>
+                        <button class="admin-tab" data-panel="panel-contact" type="button">Contact, Map & SEO</button>
+                        <button class="admin-tab" data-panel="panel-backup" type="button">Backup</button>
+                    </aside>
+                    <section class="admin-content">
+                        <div class="admin-panel active" id="panel-identity"><div class="admin-card"><h3>School Identity</h3><div class="admin-grid"><div class="admin-field"><label>School Name</label><input data-config-path="school.name"></div><div class="admin-field"><label>Logo Initials</label><input data-config-path="school.logoInitials"></div><div class="admin-field admin-field--full"><label>Logo Image URL</label><input data-config-path="school.logoUrl"><div class="admin-actions"><input type="file" id="logoUpload" accept="image/*"><button class="btn btn--secondary btn--sm" data-upload-target="school.logoUrl" data-file-input="logoUpload" type="button">Upload Logo</button></div></div><div class="admin-field"><label>Established Text</label><input data-config-path="school.establishedText"></div><div class="admin-field"><label>Motto</label><input data-config-path="school.motto"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn1" type="button">Save Website Settings</button></div></div></div>
+                        <div class="admin-panel" id="panel-theme"><div class="admin-card"><h3>Theme Presets</h3><div class="admin-grid"><div class="admin-field"><label>Preset</label><select id="themePresetSelect"><option value="green">Green Classic</option><option value="deepBlue">Deep Blue</option><option value="navyGold">Navy & Gold</option><option value="redWhite">Red & White</option><option value="purpleModern">Purple Modern</option></select></div></div><div class="admin-actions"><button class="btn btn--secondary" id="applyPresetBtn" type="button">Apply Selected Preset</button></div></div><div class="admin-card"><h3>Custom Colors</h3><div class="admin-grid admin-grid--3"><div class="admin-field"><label>Primary</label><input type="color" data-config-path="theme.primary"></div><div class="admin-field"><label>Primary Dark</label><input type="color" data-config-path="theme.primaryDark"></div><div class="admin-field"><label>Primary Light</label><input type="color" data-config-path="theme.primaryLight"></div><div class="admin-field"><label>Accent</label><input type="color" data-config-path="theme.accent"></div><div class="admin-field"><label>Accent Hover</label><input type="color" data-config-path="theme.accentHover"></div><div class="admin-field"><label>Header Background</label><input type="color" data-config-path="theme.headerBackground"></div><div class="admin-field"><label>Footer Background</label><input type="color" data-config-path="theme.footerBackground"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn2" type="button">Save Website Settings</button></div></div></div>
+                        <div class="admin-panel" id="panel-home"><div class="admin-card"><h3>Homepage Hero</h3><div class="admin-grid"><div class="admin-field"><label>Hero Tag</label><input data-config-path="hero.tag"></div><div class="admin-field"><label>Hero Title</label><input data-config-path="hero.title"></div><div class="admin-field admin-field--full"><label>Hero Subtitle</label><textarea rows="3" data-config-path="hero.subtitle"></textarea></div><div class="admin-field"><label>Primary Button Text</label><input data-config-path="hero.primaryCtaText"></div><div class="admin-field"><label>Primary Button Link</label><input data-config-path="hero.primaryCtaLink"></div><div class="admin-field"><label>Secondary Button Text</label><input data-config-path="hero.secondaryCtaText"></div><div class="admin-field"><label>Secondary Button Link</label><input data-config-path="hero.secondaryCtaLink"></div><div class="admin-field admin-field--full"><label>Hero Background Image URL</label><input data-config-path="hero.backgroundImageUrl"><div class="admin-actions"><input type="file" id="heroUpload" accept="image/*"><button class="btn btn--secondary btn--sm" data-upload-target="hero.backgroundImageUrl" data-file-input="heroUpload" type="button">Upload Hero Image</button></div></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn3" type="button">Save Website Settings</button></div></div></div>
+                        <div class="admin-panel" id="panel-about"><div class="admin-card"><h3>About Section</h3><div class="admin-grid"><div class="admin-field"><label>About Title</label><input data-config-path="about.title"></div><div class="admin-field admin-field--full"><label>About Subtitle</label><textarea rows="3" data-config-path="about.subtitle"></textarea></div></div><h3 style="margin-top:20px;">About Cards</h3><div class="admin-list" id="aboutCardsAdmin"></div><h3 style="margin-top:20px;">Principal Welcome</h3><div class="admin-grid"><div class="admin-field"><label>Principal Name</label><input data-config-path="principal.name"></div><div class="admin-field"><label>Principal Title</label><input data-config-path="principal.title"></div><div class="admin-field admin-field--full"><label>Principal Message</label><textarea rows="4" data-config-path="principal.message"></textarea></div><div class="admin-field admin-field--full"><label>Principal Photo URL</label><input data-config-path="principal.photoUrl"><div class="admin-actions"><input type="file" id="principalUpload" accept="image/*"><button class="btn btn--secondary btn--sm" data-upload-target="principal.photoUrl" data-file-input="principalUpload" type="button">Upload Principal Photo</button></div></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn4" type="button">Save Website Settings</button></div></div></div>
+                        <div class="admin-panel" id="panel-academics"><div class="admin-card"><h3>Academics Section</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input data-config-path="academics.title"></div><div class="admin-field admin-field--full"><label>Subtitle</label><textarea rows="3" data-config-path="academics.subtitle"></textarea></div></div><h3 style="margin-top:20px;">Programme Cards</h3><div class="admin-list" id="academicsAdmin"></div><div class="admin-actions"><button class="btn btn--secondary" id="addAcademicBtn" type="button">Add Programme</button><button class="btn btn--primary" id="saveConfigBtn5" type="button">Save Website Settings</button></div></div></div>
+                        <div class="admin-panel" id="panel-admissions"><div class="admin-card"><h3>Admissions Section</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input data-config-path="admissions.title"></div><div class="admin-field admin-field--full"><label>Subtitle</label><textarea rows="3" data-config-path="admissions.subtitle"></textarea></div><div class="admin-field"><label>Prospectus Button Text</label><input data-config-path="admissions.prospectusText"></div><div class="admin-field"><label>Prospectus URL</label><input data-config-path="admissions.prospectusUrl"></div></div><h3 style="margin-top:20px;">Admissions Steps</h3><div class="admin-list" id="admissionsStepsAdmin"></div><div class="admin-actions"><button class="btn btn--secondary" id="addStepBtn" type="button">Add Step</button><button class="btn btn--primary" id="saveConfigBtn6" type="button">Save Website Settings</button></div></div></div>
+                        <div class="admin-panel" id="panel-events"><div class="admin-card"><h3>Event Management</h3><div class="admin-grid"><div class="admin-field"><label>Event Title</label><input id="eventTitle"></div><div class="admin-field"><label>Event Date</label><input type="date" id="eventDate"></div><div class="admin-field admin-field--full"><label>Description</label><textarea rows="3" id="eventDescription"></textarea></div><div class="admin-field admin-field--full"><label>Image URL</label><input id="eventImageUrl"><div class="admin-actions"><input type="file" id="eventUpload" accept="image/*"><button class="btn btn--secondary btn--sm" id="eventUploadBtn" type="button">Upload Event Image</button></div></div><div class="admin-field"><label>Active</label><select id="eventActive"><option value="true">Active</option><option value="false">Inactive</option></select></div><div class="admin-field"><label>Sort Order</label><input type="number" id="eventSortOrder" value="0"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveEventBtn" type="button">Add Event</button><button class="btn btn--secondary" id="clearEventBtn" type="button">Clear Form</button><button class="btn btn--secondary" id="loadEventsAdminBtn" type="button">Refresh Events</button></div></div><div class="admin-card"><h3>Existing Events</h3><div id="eventsAdminList"></div></div></div>
+                        <div class="admin-panel" id="panel-gallery"><div class="admin-card"><h3>Gallery Management</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input id="galleryTitle"></div><div class="admin-field"><label>Alt Text</label><input id="galleryAlt"></div><div class="admin-field admin-field--full"><label>Image URL</label><input id="galleryImageUrl"><div class="admin-actions"><input type="file" id="galleryUpload" accept="image/*"><button class="btn btn--secondary btn--sm" id="galleryUploadBtn" type="button">Upload Gallery Image</button></div></div><div class="admin-field"><label>Active</label><select id="galleryActive"><option value="true">Active</option><option value="false">Inactive</option></select></div><div class="admin-field"><label>Sort Order</label><input type="number" id="gallerySortOrder" value="0"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveGalleryBtn" type="button">Add Gallery Item</button><button class="btn btn--secondary" id="clearGalleryBtn" type="button">Clear Form</button><button class="btn btn--secondary" id="loadGalleryAdminBtn" type="button">Refresh Gallery</button></div></div><div class="admin-card"><h3>Existing Gallery</h3><div id="galleryAdminList"></div></div></div>
+                        <div class="admin-panel" id="panel-news"><div class="admin-card"><h3>News & Announcements</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input id="newsTitleInput"></div><div class="admin-field"><label>Publish Date</label><input type="date" id="newsDateInput"></div><div class="admin-field admin-field--full"><label>Body</label><textarea rows="3" id="newsBodyInput"></textarea></div><div class="admin-field admin-field--full"><label>Image URL</label><input id="newsImageInput"><div class="admin-actions"><input type="file" id="newsUpload" accept="image/*"><button class="btn btn--secondary btn--sm" id="newsUploadBtn" type="button">Upload News Image</button></div></div><div class="admin-field"><label>Active</label><select id="newsActiveInput"><option value="true">Active</option><option value="false">Inactive</option></select></div><div class="admin-field"><label>Sort Order</label><input type="number" id="newsSortInput" value="0"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveNewsBtn" type="button">Add Announcement</button><button class="btn btn--secondary" id="clearNewsBtn" type="button">Clear Form</button><button class="btn btn--secondary" id="loadNewsAdminBtn" type="button">Refresh News</button></div></div><div class="admin-card"><h3>Existing News</h3><div id="newsAdminList"></div></div></div>
+                        <div class="admin-panel" id="panel-enquiries"><div class="admin-card"><h3>Enquiries Management</h3><div class="admin-grid"><div class="admin-field"><label>Filter</label><select id="enquiryFilter"><option value="all">All</option><option value="admissions">Admissions</option><option value="contact">Contact</option><option value="unread">Unread</option><option value="responded">Responded</option></select></div></div><div class="admin-actions"><button class="btn btn--secondary" id="loadEnquiriesBtn" type="button">Load Enquiries</button><button class="btn btn--secondary" id="exportEnquiriesBtn" type="button">Export CSV</button></div></div><div class="admin-card"><h3>Messages</h3><div id="enquiriesAdminList"></div></div></div>
+                        <div class="admin-panel" id="panel-contact"><div class="admin-card"><h3>Contact and Google Map</h3><div class="admin-grid"><div class="admin-field admin-field--full"><label>Address</label><textarea rows="3" data-config-path="contact.address"></textarea></div><div class="admin-field"><label>Phone</label><input data-config-path="contact.phone"></div><div class="admin-field"><label>Email</label><input data-config-path="contact.email"></div><div class="admin-field"><label>WhatsApp</label><input data-config-path="contact.whatsapp"></div><div class="admin-field admin-field--full"><label>Google Maps Embed URL</label><input data-config-path="contact.mapEmbedUrl"></div></div></div><div class="admin-card"><h3>SEO and Social Sharing</h3><div class="admin-grid"><div class="admin-field"><label>Page Title</label><input data-config-path="seo.pageTitle"></div><div class="admin-field"><label>Keywords</label><input data-config-path="seo.keywords"></div><div class="admin-field admin-field--full"><label>Meta Description</label><textarea rows="3" data-config-path="seo.description"></textarea></div><div class="admin-field"><label>Open Graph Title</label><input data-config-path="seo.ogTitle"></div><div class="admin-field"><label>Open Graph Image URL</label><input data-config-path="seo.ogImage"></div><div class="admin-field admin-field--full"><label>Open Graph Description</label><textarea rows="3" data-config-path="seo.ogDescription"></textarea></div><div class="admin-field"><label>Facebook URL</label><input data-config-path="social.facebook"></div><div class="admin-field"><label>X/Twitter URL</label><input data-config-path="social.twitter"></div><div class="admin-field"><label>Instagram URL</label><input data-config-path="social.instagram"></div><div class="admin-field"><label>YouTube URL</label><input data-config-path="social.youtube"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn7" type="button">Save Website Settings</button></div></div></div>
+                        <div class="admin-panel" id="panel-backup"><div class="admin-card"><h3>Backup and Restore</h3><p>Export the current website settings before making major changes. You can import the backup later if needed.</p><div class="admin-actions"><button class="btn btn--secondary" id="exportConfigBtn" type="button">Export Settings JSON</button><input type="file" id="importConfigFile" accept="application/json"><button class="btn btn--secondary" id="importConfigBtn" type="button">Import Settings JSON</button><button class="btn btn--danger" id="resetConfigBtn" type="button">Restore Default Template</button></div></div></div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const DEFAULT_CONFIG = {
+                supabase: { url: 'https://zgjloolszgpibvlfwlwn.supabase.co', anonKey: 'sb_publishable_Bom8hoUA9cDobGe3PNWw-A_TX8s2-VA' },
+                settingsKey: 'default',
+                storageBucket: 'school-website-assets',
+                school: { name: 'Greenfield Academy', logoInitials: 'GA', logoUrl: '', establishedText: 'Est. 1995 • Excellence in Education', motto: 'Nurturing Minds, Growing Futures' },
+                theme: { primary: '#3A7D44', primaryDark: '#2D6235', primaryLight: '#5B9A5F', accent: '#F0A04B', accentHover: '#D98A35', headerBackground: '#FFFFFF', footerBackground: '#263028' },
+                hero: { tag: 'Est. 1995 • Excellence in Education', title: 'Nurturing Minds,\nGrowing Futures', subtitle: 'Welcome to Greenfield Academy, a vibrant learning community where curiosity thrives, character blooms, and every student is empowered to reach their fullest potential.', primaryCtaText: 'Admissions Open', primaryCtaLink: '#admissions', secondaryCtaText: 'Virtual Tour', secondaryCtaLink: '#gallery', backgroundImageUrl: '' },
+                about: { title: 'About Greenfield Academy', subtitle: 'For nearly three decades, we have been dedicated to fostering academic excellence, personal growth, and a lifelong love of learning.', cards: [ { icon: '🎯', title: 'Our Mission', text: 'To provide a holistic education that ignites intellectual curiosity, builds resilience, and prepares students to thrive with confidence and compassion.' }, { icon: '🌟', title: 'Our Vision', text: 'To be a beacon of progressive education where innovative teaching meets timeless values.' }, { icon: '🤝', title: 'Core Values', text: 'Respect, integrity, curiosity, resilience, and community guide everything we do inside the classroom and beyond.' } ] },
+                principal: { name: 'The Principal', title: 'Principal’s Welcome', message: 'Welcome to our school community. We are committed to creating a caring, disciplined, and inspiring environment where every learner can grow academically and morally.', photoUrl: '' },
+                academics: { title: 'Our Curriculum', subtitle: 'A rich, balanced programme designed to spark curiosity and develop well-rounded, future-ready learners.', cards: [ { icon: '🔬', title: 'STEM', text: 'Hands-on Science, Technology, Engineering, and Mathematics with inquiry-based learning.' }, { icon: '📚', title: 'Humanities', text: 'Literature, History, Global Studies, and critical thinking for responsible citizenship.' }, { icon: '🎨', title: 'Creative Arts', text: 'Visual Arts, Music, Drama, and Design that encourage confidence and creative expression.' } ] },
+                admissions: { title: 'Admissions', subtitle: 'Joining our school is the first step on an inspiring educational journey.', prospectusText: 'Download Prospectus', prospectusUrl: '#', steps: [ { title: 'Submit an Enquiry', text: 'Fill out the form or contact us. We will send you the required admission information.' }, { title: 'Campus Visit and Tour', text: 'Visit the school, meet staff, and experience our learning environment.' }, { title: 'Application and Assessment', text: 'Complete the application form and any age-appropriate assessment.' }, { title: 'Offer and Enrolment', text: 'Successful applicants receive an offer and complete enrolment.' } ] },
+                events: { title: 'Upcoming Events', subtitle: 'Stay connected with our vibrant school community.', fallback: [ { title: 'Open Morning', date: '2026-06-22', description: 'Tour our campus, meet our faculty, and discover what makes our school special.', image_url: '', is_active: true, sort_order: 1 }, { title: 'Science Fair', date: '2026-07-08', description: 'Students showcase innovative projects and practical learning.', image_url: '', is_active: true, sort_order: 2 } ] },
+                announcements: { title: 'News & Announcements', subtitle: 'Important notices, admission updates, and school community news.', fallback: [ { title: 'Admissions Open', publish_date: '2026-05-01', body: 'Applications are open for the next academic year. Interested parents may submit an enquiry online.', image_url: '', is_active: true, sort_order: 1 }, { title: 'Parent Engagement Week', publish_date: '2026-05-15', body: 'Parents are invited to meet teachers and discuss student progress.', image_url: '', is_active: true, sort_order: 2 } ] },
+                gallery: { title: 'Campus Gallery', subtitle: 'Take a peek inside our campus. Click any image to view it full-size.', fallback: [ { title: 'School Library', image_url: 'https://picsum.photos/id/20/900/650', alt_text: 'Modern school library', is_active: true, sort_order: 1 }, { title: 'Classroom Learning', image_url: 'https://picsum.photos/id/24/900/650', alt_text: 'Students learning in classroom', is_active: true, sort_order: 2 }, { title: 'Outdoor Space', image_url: 'https://picsum.photos/id/26/900/650', alt_text: 'Outdoor school space', is_active: true, sort_order: 3 } ] },
+                contact: { title: 'Get In Touch', subtitle: 'We would love to hear from you. Reach out with any questions.', address: 'Greenfield Academy\n123 Education Lane, Greenfield Park\nLondon, NW1 4AB', phone: '+44 (0)20 7946 0123', email: 'info@greenfieldacademy.edu', whatsapp: '', mapEmbedUrl: '' },
+                footer: { description: 'Nurturing minds, growing futures.', bottomText: '© 2026 Greenfield Academy. All rights reserved.' },
+                social: { facebook: 'https://facebook.com', twitter: 'https://twitter.com', instagram: 'https://instagram.com', youtube: 'https://youtube.com' },
+                seo: { pageTitle: 'Greenfield Academy | Nurturing Minds, Growing Futures', description: 'Greenfield Academy is a vibrant learning community focused on academic excellence, character formation, and future-ready education.', keywords: 'Greenfield Academy, school, admissions, academics, education', ogTitle: 'Greenfield Academy', ogDescription: 'Nurturing Minds, Growing Futures', ogImage: '' }
+            };
+            const THEME_PRESETS = {
+                green: { primary: '#3A7D44', primaryDark: '#2D6235', primaryLight: '#5B9A5F', accent: '#F0A04B', accentHover: '#D98A35', headerBackground: '#FFFFFF', footerBackground: '#263028' },
+                deepBlue: { primary: '#0B3D91', primaryDark: '#082B66', primaryLight: '#2F6BC2', accent: '#F4B400', accentHover: '#D99A00', headerBackground: '#FFFFFF', footerBackground: '#061A40' },
+                navyGold: { primary: '#102A43', primaryDark: '#071A2D', primaryLight: '#2F4F6F', accent: '#C9A227', accentHover: '#AA861B', headerBackground: '#FFFFFF', footerBackground: '#071A2D' },
+                redWhite: { primary: '#B71C1C', primaryDark: '#7F1010', primaryLight: '#D84343', accent: '#1F2937', accentHover: '#111827', headerBackground: '#FFFFFF', footerBackground: '#2B1111' },
+                purpleModern: { primary: '#5B2C83', primaryDark: '#3F1D5E', primaryLight: '#7E57C2', accent: '#00A896', accentHover: '#008B7C', headerBackground: '#FFFFFF', footerBackground: '#27123A' }
+            };
+            let currentConfig = clone(DEFAULT_CONFIG);
+            let supabaseClient = null;
+            let adminSession = null;
+            let editingEventId = null;
+            let editingGalleryId = null;
+            let editingNewsId = null;
+            let enquiriesCache = [];
+
+            const $ = (id) => document.getElementById(id);
+            function clone(obj) { return JSON.parse(JSON.stringify(obj)); }
+            function deepMerge(target, source) {
+                if (!source || typeof source !== 'object') return target;
+                Object.keys(source).forEach(key => {
+                    if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
+                        if (!target[key] || typeof target[key] !== 'object' || Array.isArray(target[key])) target[key] = {};
+                        deepMerge(target[key], source[key]);
+                    } else {
+                        target[key] = source[key];
+                    }
+                });
+                return target;
+            }
+            function getPath(obj, path) { return path.split('.').reduce((acc, key) => acc && acc[key], obj); }
+            function setPath(obj, path, value) {
+                const parts = path.split('.');
+                let ref = obj;
+                parts.slice(0, -1).forEach(key => { if (!ref[key] || typeof ref[key] !== 'object') ref[key] = {}; ref = ref[key]; });
+                ref[parts[parts.length - 1]] = value;
+            }
+            function safeUrl(url) {
+                if (!url) return '';
+                try {
+                    if (url.startsWith('#')) return url;
+                    const parsed = new URL(url, window.location.href);
+                    return ['http:', 'https:', 'mailto:', 'tel:'].includes(parsed.protocol) ? parsed.href : '';
+                } catch (e) { return ''; }
+            }
+            function formatDate(value) {
+                if (!value) return '';
+                const date = new Date(value + (String(value).length === 10 ? 'T00:00:00' : ''));
+                if (Number.isNaN(date.getTime())) return value;
+                return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+            }
+            function setText(id, value) { const el = $(id); if (el) el.textContent = value || ''; }
+            function show(el) { if (el) el.classList.add('visible'); }
+            function hide(el) { if (el) el.classList.remove('visible'); }
+            function adminMessage(text, type = 'success') {
+                const box = $('adminMessage');
+                box.textContent = text;
+                box.className = 'admin-message visible ' + type;
+                setTimeout(() => box.classList.remove('visible'), 5000);
+            }
+            function setMeta(selector, attr, value) {
+                const el = document.querySelector(selector);
+                if (el) el.setAttribute(attr, value || '');
+            }
+            function applyTheme() {
+                const t = currentConfig.theme || DEFAULT_CONFIG.theme;
+                const root = document.documentElement.style;
+                root.setProperty('--clr-primary', t.primary || DEFAULT_CONFIG.theme.primary);
+                root.setProperty('--clr-primary-dark', t.primaryDark || DEFAULT_CONFIG.theme.primaryDark);
+                root.setProperty('--clr-primary-light', t.primaryLight || DEFAULT_CONFIG.theme.primaryLight);
+                root.setProperty('--clr-accent', t.accent || DEFAULT_CONFIG.theme.accent);
+                root.setProperty('--clr-accent-hover', t.accentHover || DEFAULT_CONFIG.theme.accentHover);
+                root.setProperty('--clr-header-bg', t.headerBackground || DEFAULT_CONFIG.theme.headerBackground);
+                root.setProperty('--clr-footer-bg', t.footerBackground || DEFAULT_CONFIG.theme.footerBackground);
+            }
+            function renderSite() {
+                applyTheme();
+                document.title = currentConfig.seo.pageTitle || currentConfig.school.name;
+                setMeta('meta[name="description"]', 'content', currentConfig.seo.description);
+                setMeta('meta[name="keywords"]', 'content', currentConfig.seo.keywords);
+                setMeta('meta[property="og:title"]', 'content', currentConfig.seo.ogTitle || currentConfig.school.name);
+                setMeta('meta[property="og:description"]', 'content', currentConfig.seo.ogDescription || currentConfig.hero.subtitle);
+                setMeta('meta[property="og:image"]', 'content', currentConfig.seo.ogImage || currentConfig.school.logoUrl || currentConfig.hero.backgroundImageUrl);
+                setText('siteNameText', currentConfig.school.name);
+                setText('siteLogoText', currentConfig.school.logoInitials || 'S');
+                const logoImg = $('siteLogoImg');
+                const logoText = $('siteLogoText');
+                if (currentConfig.school.logoUrl) { logoImg.src = currentConfig.school.logoUrl; logoImg.style.display = 'block'; logoText.style.display = 'none'; } else { logoImg.removeAttribute('src'); logoImg.style.display = 'none'; logoText.style.display = 'inline-flex'; }
+                const hero = $('heroSection');
+                if (currentConfig.hero.backgroundImageUrl) { hero.classList.add('has-image'); hero.style.backgroundImage = 'linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.45)), url("' + currentConfig.hero.backgroundImageUrl.replace(/"/g, '%22') + '")'; } else { hero.classList.remove('has-image'); hero.style.backgroundImage = ''; }
+                setText('heroTag', currentConfig.hero.tag);
+                $('heroHeading').innerHTML = String(currentConfig.hero.title || '').replace(/\n/g, '<br>');
+                setText('heroSubtitle', currentConfig.hero.subtitle);
+                $('heroPrimaryCta').textContent = currentConfig.hero.primaryCtaText || 'Learn More'; $('heroPrimaryCta').href = safeUrl(currentConfig.hero.primaryCtaLink) || '#admissions';
+                $('heroSecondaryCta').textContent = currentConfig.hero.secondaryCtaText || 'Gallery'; $('heroSecondaryCta').href = safeUrl(currentConfig.hero.secondaryCtaLink) || '#gallery';
+                setText('aboutHeading', currentConfig.about.title); setText('aboutSubtitle', currentConfig.about.subtitle); renderAboutCards(); renderPrincipal();
+                setText('academicsHeading', currentConfig.academics.title); setText('academicsSubtitle', currentConfig.academics.subtitle); renderAcademics();
+                setText('admissionsHeading', currentConfig.admissions.title); setText('admissionsSubtitle', currentConfig.admissions.subtitle); renderAdmissionsSteps();
+                $('prospectusBtn').textContent = currentConfig.admissions.prospectusText || 'Download Prospectus'; $('prospectusBtn').href = safeUrl(currentConfig.admissions.prospectusUrl) || '#';
+                setText('eventsHeading', currentConfig.events.title); setText('eventsSubtitle', currentConfig.events.subtitle);
+                setText('newsHeading', currentConfig.announcements.title); setText('newsSubtitle', currentConfig.announcements.subtitle);
+                setText('galleryHeading', currentConfig.gallery.title); setText('gallerySubtitle', currentConfig.gallery.subtitle);
+                setText('contactHeading', currentConfig.contact.title); setText('contactSubtitle', currentConfig.contact.subtitle); renderContact();
+                setText('footerSchoolName', currentConfig.school.name); setText('footerDescription', currentConfig.footer.description); setText('footerBottomText', currentConfig.footer.bottomText.replace(/Greenfield Academy/g, currentConfig.school.name)); renderSocial();
+                fillConfigInputs(); renderAdminArrayEditors();
+            }
+            function renderAboutCards() {
+                const grid = $('aboutCards'); grid.innerHTML = '';
+                (currentConfig.about.cards || []).forEach(card => {
+                    const item = document.createElement('article'); item.className = 'card';
+                    const icon = document.createElement('div'); icon.className = 'card__icon'; icon.textContent = card.icon || '•';
+                    const title = document.createElement('h3'); title.className = 'card__title'; title.textContent = card.title || '';
+                    const text = document.createElement('p'); text.className = 'card__text'; text.textContent = card.text || '';
+                    item.append(icon, title, text); grid.appendChild(item);
+                });
+            }
+            function renderPrincipal() {
+                const wrap = $('principalSection'); wrap.innerHTML = '';
+                const media = currentConfig.principal.photoUrl ? document.createElement('img') : document.createElement('div');
+                if (currentConfig.principal.photoUrl) { media.src = currentConfig.principal.photoUrl; media.alt = currentConfig.principal.name || 'Principal'; media.className = 'principal__photo'; } else { media.className = 'principal__placeholder'; media.textContent = 'Principal Photo'; }
+                const body = document.createElement('div'); const label = document.createElement('div'); label.className = 'principal__label'; label.textContent = currentConfig.principal.title || 'Principal’s Welcome';
+                const h = document.createElement('h3'); h.textContent = currentConfig.principal.name || 'The Principal';
+                const p = document.createElement('p'); p.textContent = currentConfig.principal.message || '';
+                body.append(label, h, p); wrap.append(media, body);
+            }
+            function renderAcademics() {
+                const grid = $('academicsGrid'); grid.innerHTML = '';
+                (currentConfig.academics.cards || []).forEach(card => {
+                    const item = document.createElement('article'); item.className = 'acad-card';
+                    const icon = document.createElement('div'); icon.className = 'acad-card__icon'; icon.textContent = card.icon || '•';
+                    const title = document.createElement('h3'); title.className = 'acad-card__title'; title.textContent = card.title || '';
+                    const text = document.createElement('p'); text.className = 'acad-card__text'; text.textContent = card.text || '';
+                    item.append(icon, title, text); grid.appendChild(item);
+                });
+            }
+            function renderAdmissionsSteps() {
+                const list = $('admissionsSteps'); list.innerHTML = '';
+                (currentConfig.admissions.steps || []).forEach(step => {
+                    const li = document.createElement('li'); const strong = document.createElement('strong'); strong.textContent = step.title || '';
+                    li.append(strong, document.createTextNode(step.text || '')); list.appendChild(li);
+                });
+            }
+            function renderContact() {
+                const wrap = $('contactInfo'); wrap.innerHTML = '';
+                const items = [ ['📍', 'Address', currentConfig.contact.address], ['☎️', 'Phone', currentConfig.contact.phone], ['✉️', 'Email', currentConfig.contact.email], ['💬', 'WhatsApp', currentConfig.contact.whatsapp] ];
+                items.filter(item => item[2]).forEach(item => {
+                    const row = document.createElement('div'); row.className = 'contact-info__item';
+                    const icon = document.createElement('span'); icon.className = 'contact-info__icon'; icon.textContent = item[0];
+                    const body = document.createElement('div'); const strong = document.createElement('strong'); strong.textContent = item[1]; body.append(strong, document.createElement('br'), document.createTextNode(String(item[2])));
+                    row.append(icon, body); wrap.appendChild(row);
+                });
+                if (currentConfig.contact.mapEmbedUrl && safeUrl(currentConfig.contact.mapEmbedUrl)) {
+                    const iframe = document.createElement('iframe'); iframe.className = 'map-frame'; iframe.loading = 'lazy'; iframe.allowFullscreen = true; iframe.referrerPolicy = 'no-referrer-when-downgrade'; iframe.src = currentConfig.contact.mapEmbedUrl; wrap.appendChild(iframe);
+                } else {
+                    const map = document.createElement('div'); map.className = 'map-placeholder'; map.textContent = 'Google Maps embed can be added from the School Admin editor.'; wrap.appendChild(map);
+                }
+            }
+            function renderSocial() {
+                const wrap = $('footerSocial'); wrap.innerHTML = '';
+                const labels = { facebook: 'Facebook', twitter: 'X', instagram: 'Instagram', youtube: 'YouTube' };
+                Object.keys(labels).forEach(key => {
+                    const url = currentConfig.social[key];
+                    if (url) { const a = document.createElement('a'); a.href = safeUrl(url) || '#'; a.target = '_blank'; a.rel = 'noopener'; a.textContent = labels[key]; wrap.appendChild(a); }
+                });
+            }
+            async function initSupabase() {
+                const url = currentConfig.supabase.url; const key = currentConfig.supabase.anonKey;
+                if (window.supabase && url && key && url.includes('supabase.co') && !url.includes('your-project-id')) {
+                    try { supabaseClient = window.supabase.createClient(url, key); } catch (e) { console.warn('Supabase unavailable', e); }
+                }
+            }
+            async function loadSettings() {
+                await initSupabase();
+                if (!supabaseClient) return;
+                try {
+                    const { data, error } = await supabaseClient.from('school_website_settings').select('config_json').eq('site_key', currentConfig.settingsKey).maybeSingle();
+                    if (!error && data && data.config_json) currentConfig = deepMerge(clone(DEFAULT_CONFIG), data.config_json);
+                } catch (e) { console.warn('Could not load website settings', e); }
+            }
+            async function saveSettings() {
+                if (!supabaseClient || !adminSession) { adminMessage('Please login as School Admin before saving.', 'error'); return; }
+                const payload = { site_key: currentConfig.settingsKey, config_json: currentConfig, updated_at: new Date().toISOString(), updated_by: adminSession.user.id };
+                const { error } = await supabaseClient.from('school_website_settings').upsert(payload, { onConflict: 'site_key' });
+                if (error) { adminMessage('Settings could not be saved: ' + error.message, 'error'); return; }
+                renderSite(); adminMessage('Website settings saved successfully.');
+            }
+            async function loadEventsPublic() {
+                let records = currentConfig.events.fallback || [];
+                if (supabaseClient) {
+                    const today = new Date().toISOString().split('T')[0];
+                    const { data, error } = await supabaseClient.from('events').select('*').eq('is_active', true).gte('event_date', today).order('event_date', { ascending: true }).order('sort_order', { ascending: true });
+                    if (!error && data && data.length) records = data.map(e => ({ title: e.title, date: e.event_date, description: e.description, image_url: e.image_url }));
+                }
+                renderEvents(records);
+            }
+            function renderEvents(records) {
+                const grid = $('eventsGrid'); grid.innerHTML = '';
+                (records || []).forEach((event, index) => {
+                    const card = document.createElement('article'); card.className = 'event-card';
+                    if (event.image_url) { const img = document.createElement('img'); img.className = 'event-card__image'; img.src = event.image_url; img.alt = event.title || 'Event image'; card.appendChild(img); }
+                    const d = new Date((event.date || event.event_date || '') + 'T00:00:00');
+                    const badge = document.createElement('div'); badge.className = 'event-card__date-badge'; badge.style.background = index % 2 ? 'var(--clr-accent)' : 'var(--clr-primary)';
+                    const day = document.createElement('div'); day.className = 'event-card__day'; day.textContent = Number.isNaN(d.getTime()) ? '--' : String(d.getDate()).padStart(2, '0');
+                    const month = document.createElement('div'); month.className = 'event-card__month'; month.textContent = Number.isNaN(d.getTime()) ? '' : d.toLocaleString(undefined, { month: 'short' });
+                    badge.append(day, month);
+                    const body = document.createElement('div'); body.className = 'event-card__body'; const title = document.createElement('h3'); title.className = 'event-card__title'; title.textContent = event.title || '';
+                    const desc = document.createElement('p'); desc.className = 'event-card__desc'; desc.textContent = event.description || '';
+                    body.append(title, desc); card.append(badge, body); grid.appendChild(card);
+                });
+            }
+            async function loadGalleryPublic() {
+                let records = currentConfig.gallery.fallback || [];
+                if (supabaseClient) {
+                    const { data, error } = await supabaseClient.from('gallery').select('*').eq('is_active', true).order('sort_order', { ascending: true });
+                    if (!error && data && data.length) records = data;
+                }
+                renderGallery(records);
+            }
+            function renderGallery(records) {
+                const grid = $('galleryGrid'); grid.innerHTML = '';
+                (records || []).filter(item => item.image_url || item.url).forEach(item => {
+                    const figure = document.createElement('figure'); figure.className = 'gallery-item'; const img = document.createElement('img'); img.loading = 'lazy'; img.src = item.image_url || item.url; img.alt = item.alt_text || item.title || 'Gallery image';
+                    figure.addEventListener('click', () => openLightbox(img.src, img.alt)); figure.appendChild(img);
+                    if (item.title) { const cap = document.createElement('figcaption'); cap.className = 'gallery-item__caption'; cap.textContent = item.title; figure.appendChild(cap); }
+                    grid.appendChild(figure);
+                });
+            }
+            async function loadNewsPublic() {
+                let records = currentConfig.announcements.fallback || [];
+                if (supabaseClient) {
+                    const { data, error } = await supabaseClient.from('announcements').select('*').eq('is_active', true).order('publish_date', { ascending: false }).order('sort_order', { ascending: true });
+                    if (!error && data && data.length) records = data;
+                }
+                renderNews(records);
+            }
+            function renderNews(records) {
+                const grid = $('newsGrid'); grid.innerHTML = '';
+                (records || []).forEach(item => {
+                    const card = document.createElement('article'); card.className = 'news-card';
+                    if (item.image_url) { const img = document.createElement('img'); img.className = 'news-card__image'; img.src = item.image_url; img.alt = item.title || 'Announcement image'; card.appendChild(img); }
+                    const body = document.createElement('div'); body.className = 'news-card__body'; const date = document.createElement('div'); date.className = 'news-card__date'; date.textContent = formatDate(item.publish_date);
+                    const title = document.createElement('h3'); title.className = 'news-card__title'; title.textContent = item.title || '';
+                    const desc = document.createElement('p'); desc.className = 'news-card__desc'; desc.textContent = item.body || item.description || '';
+                    body.append(date, title, desc); card.appendChild(body); grid.appendChild(card);
+                });
+            }
+            async function submitEnquiry(formEl, type, successEl, errorEl) {
+                hide(successEl); hide(errorEl);
+                const data = new FormData(formEl);
+                const email = String(data.get('email') || '').trim();
+                if (!email || !email.includes('@')) { show(errorEl); return; }
+                const payload = { type, email, phone: data.get('phone') || null, message: data.get('message') || null, name: data.get('name') || null, parent_name: data.get('parent_name') || null, student_name: data.get('student_name') || null, subject: data.get('subject') || null, status: 'new', is_read: false };
+                if (supabaseClient) {
+                    const { error } = await supabaseClient.from('enquiries').insert([payload]);
+                    if (error) { console.error(error); show(errorEl); return; }
+                }
+                formEl.reset(); show(successEl);
+            }
+            function fillConfigInputs() {
+                document.querySelectorAll('[data-config-path]').forEach(input => {
+                    const value = getPath(currentConfig, input.dataset.configPath);
+                    if (input.type === 'color') input.value = value || '#000000'; else input.value = value || '';
+                });
+            }
+            function bindConfigInputs() {
+                document.querySelectorAll('[data-config-path]').forEach(input => {
+                    input.addEventListener('input', () => { setPath(currentConfig, input.dataset.configPath, input.value); renderSite(); });
+                });
+            }
+            function renderAdminArrayEditors() {
+                renderArrayEditor('aboutCardsAdmin', currentConfig.about.cards, 'about.cards', ['icon','title','text']);
+                renderArrayEditor('academicsAdmin', currentConfig.academics.cards, 'academics.cards', ['icon','title','text']);
+                renderArrayEditor('admissionsStepsAdmin', currentConfig.admissions.steps, 'admissions.steps', ['title','text']);
+            }
+            function renderArrayEditor(containerId, array, basePath, fields) {
+                const container = $(containerId); if (!container) return; container.innerHTML = '';
+                (array || []).forEach((item, index) => {
+                    const card = document.createElement('div'); card.className = 'admin-list-item';
+                    const grid = document.createElement('div'); grid.className = 'admin-grid';
+                    fields.forEach(field => {
+                        const wrap = document.createElement('div'); wrap.className = field === 'text' ? 'admin-field admin-field--full' : 'admin-field';
+                        const label = document.createElement('label'); label.textContent = field.charAt(0).toUpperCase() + field.slice(1);
+                        const input = field === 'text' ? document.createElement('textarea') : document.createElement('input'); if (field === 'text') input.rows = 3; input.value = item[field] || '';
+                        input.addEventListener('input', () => { item[field] = input.value; renderSite(); });
+                        wrap.append(label, input); grid.appendChild(wrap);
+                    });
+                    const actions = document.createElement('div'); actions.className = 'admin-actions'; const remove = document.createElement('button'); remove.className = 'btn btn--danger btn--sm'; remove.type = 'button'; remove.textContent = 'Remove'; remove.addEventListener('click', () => { array.splice(index, 1); renderSite(); }); actions.appendChild(remove); card.append(grid, actions); container.appendChild(card);
+                });
+            }
+            async function uploadAsset(fileInputId, targetPathOrInputId) {
+                if (!supabaseClient || !adminSession) { adminMessage('Please login before uploading images.', 'error'); return ''; }
+                const input = $(fileInputId); const file = input && input.files && input.files[0];
+                if (!file) { adminMessage('Select an image file first.', 'error'); return ''; }
+                const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
+                const cleanName = file.name.replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 50);
+                const path = 'uploads/' + new Date().getFullYear() + '/' + Date.now() + '-' + cleanName + '.' + ext;
+                const { error } = await supabaseClient.storage.from(currentConfig.storageBucket).upload(path, file, { cacheControl: '3600', upsert: false });
+                if (error) { adminMessage('Upload failed: ' + error.message, 'error'); return ''; }
+                const { data } = supabaseClient.storage.from(currentConfig.storageBucket).getPublicUrl(path);
+                const url = data.publicUrl;
+                if (targetPathOrInputId && targetPathOrInputId.includes('.')) { setPath(currentConfig, targetPathOrInputId, url); renderSite(); }
+                else if (targetPathOrInputId) { $(targetPathOrInputId).value = url; }
+                adminMessage('Image uploaded successfully.'); input.value = ''; return url;
+            }
+            async function adminLogin() {
+                if (!supabaseClient) { adminMessage('Supabase is not configured correctly.', 'error'); return; }
+                const email = $('adminEmail').value.trim(); const password = $('adminPassword').value;
+                const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+                if (error) { adminMessage('Login failed: ' + error.message, 'error'); return; }
+                adminSession = data.session;
+                const allowed = await verifyAdmin();
+                if (!allowed) { await supabaseClient.auth.signOut(); adminSession = null; adminMessage('This user is not authorized as a website admin.', 'error'); return; }
+                showAdminShell(email);
+            }
+            async function verifyAdmin() {
+                if (!adminSession) return false;
+                const user = adminSession.user;
+                const { data, error } = await supabaseClient.from('school_website_admins').select('id').or('user_id.eq.' + user.id + ',email.eq.' + user.email).eq('is_active', true).limit(1);
+                return !error && data && data.length > 0;
+            }
+            function showAdminShell(email) {
+                $('adminLoginBox').style.display = 'none'; $('adminShell').classList.add('active'); $('adminSignOutBtn').classList.remove('hidden'); $('adminRefreshBtn').classList.remove('hidden'); $('adminStatus').textContent = 'Logged in as ' + email;
+                fillConfigInputs(); renderAdminArrayEditors(); loadEventsAdmin(); loadGalleryAdmin(); loadNewsAdmin();
+            }
+            async function adminSignOut() { if (supabaseClient) await supabaseClient.auth.signOut(); adminSession = null; $('adminLoginBox').style.display = 'block'; $('adminShell').classList.remove('active'); $('adminSignOutBtn').classList.add('hidden'); $('adminRefreshBtn').classList.add('hidden'); $('adminStatus').textContent = 'Sign in to manage this website.'; }
+            async function checkExistingSession() {
+                if (!supabaseClient) return;
+                const { data } = await supabaseClient.auth.getSession();
+                if (data && data.session) { adminSession = data.session; if (await verifyAdmin()) showAdminShell(adminSession.user.email); }
+            }
+            async function saveEvent() {
+                if (!supabaseClient || !adminSession) { adminMessage('Login required.', 'error'); return; }
+                const record = { title: $('eventTitle').value.trim(), event_date: $('eventDate').value, description: $('eventDescription').value.trim(), image_url: $('eventImageUrl').value.trim() || null, is_active: $('eventActive').value === 'true', sort_order: Number($('eventSortOrder').value || 0) };
+                if (!record.title || !record.event_date) { adminMessage('Event title and date are required.', 'error'); return; }
+                let error;
+                if (editingEventId) ({ error } = await supabaseClient.from('events').update(record).eq('id', editingEventId)); else ({ error } = await supabaseClient.from('events').insert([record]));
+                if (error) { adminMessage('Event save failed: ' + error.message, 'error'); return; }
+                clearEventForm(); adminMessage('Event saved.'); await loadEventsAdmin(); await loadEventsPublic();
+            }
+            function clearEventForm(){ editingEventId=null; $('saveEventBtn').textContent='Add Event'; ['eventTitle','eventDate','eventDescription','eventImageUrl'].forEach(id=>$(id).value=''); $('eventActive').value='true'; $('eventSortOrder').value='0'; }
+            async function loadEventsAdmin() {
+                if (!supabaseClient || !adminSession) return;
+                const { data, error } = await supabaseClient.from('events').select('*').order('event_date', { ascending: false });
+                renderRecordList('eventsAdminList', data, error, (item) => editEvent(item), async (item) => { await deleteRecord('events', item.id); await loadEventsAdmin(); await loadEventsPublic(); });
+            }
+            function editEvent(item){ editingEventId=item.id; $('eventTitle').value=item.title||''; $('eventDate').value=item.event_date||''; $('eventDescription').value=item.description||''; $('eventImageUrl').value=item.image_url||''; $('eventActive').value=String(!!item.is_active); $('eventSortOrder').value=item.sort_order||0; $('saveEventBtn').textContent='Update Event'; }
+            async function saveGallery() {
+                if (!supabaseClient || !adminSession) { adminMessage('Login required.', 'error'); return; }
+                const record = { title: $('galleryTitle').value.trim(), alt_text: $('galleryAlt').value.trim(), image_url: $('galleryImageUrl').value.trim(), is_active: $('galleryActive').value === 'true', sort_order: Number($('gallerySortOrder').value || 0) };
+                if (!record.image_url) { adminMessage('Gallery image URL is required.', 'error'); return; }
+                let error;
+                if (editingGalleryId) ({ error } = await supabaseClient.from('gallery').update(record).eq('id', editingGalleryId)); else ({ error } = await supabaseClient.from('gallery').insert([record]));
+                if (error) { adminMessage('Gallery save failed: ' + error.message, 'error'); return; }
+                clearGalleryForm(); adminMessage('Gallery item saved.'); await loadGalleryAdmin(); await loadGalleryPublic();
+            }
+            function clearGalleryForm(){ editingGalleryId=null; $('saveGalleryBtn').textContent='Add Gallery Item'; ['galleryTitle','galleryAlt','galleryImageUrl'].forEach(id=>$(id).value=''); $('galleryActive').value='true'; $('gallerySortOrder').value='0'; }
+            async function loadGalleryAdmin() {
+                if (!supabaseClient || !adminSession) return;
+                const { data, error } = await supabaseClient.from('gallery').select('*').order('sort_order', { ascending: true });
+                renderRecordList('galleryAdminList', data, error, (item) => editGallery(item), async (item) => { await deleteRecord('gallery', item.id); await loadGalleryAdmin(); await loadGalleryPublic(); });
+            }
+            function editGallery(item){ editingGalleryId=item.id; $('galleryTitle').value=item.title||''; $('galleryAlt').value=item.alt_text||''; $('galleryImageUrl').value=item.image_url||''; $('galleryActive').value=String(!!item.is_active); $('gallerySortOrder').value=item.sort_order||0; $('saveGalleryBtn').textContent='Update Gallery Item'; }
+            async function saveNews() {
+                if (!supabaseClient || !adminSession) { adminMessage('Login required.', 'error'); return; }
+                const record = { title: $('newsTitleInput').value.trim(), publish_date: $('newsDateInput').value || new Date().toISOString().split('T')[0], body: $('newsBodyInput').value.trim(), image_url: $('newsImageInput').value.trim() || null, is_active: $('newsActiveInput').value === 'true', sort_order: Number($('newsSortInput').value || 0) };
+                if (!record.title || !record.body) { adminMessage('News title and body are required.', 'error'); return; }
+                let error;
+                if (editingNewsId) ({ error } = await supabaseClient.from('announcements').update(record).eq('id', editingNewsId)); else ({ error } = await supabaseClient.from('announcements').insert([record]));
+                if (error) { adminMessage('News save failed: ' + error.message, 'error'); return; }
+                clearNewsForm(); adminMessage('Announcement saved.'); await loadNewsAdmin(); await loadNewsPublic();
+            }
+            function clearNewsForm(){ editingNewsId=null; $('saveNewsBtn').textContent='Add Announcement'; ['newsTitleInput','newsDateInput','newsBodyInput','newsImageInput'].forEach(id=>$(id).value=''); $('newsActiveInput').value='true'; $('newsSortInput').value='0'; }
+            async function loadNewsAdmin() {
+                if (!supabaseClient || !adminSession) return;
+                const { data, error } = await supabaseClient.from('announcements').select('*').order('publish_date', { ascending: false });
+                renderRecordList('newsAdminList', data, error, (item) => editNews(item), async (item) => { await deleteRecord('announcements', item.id); await loadNewsAdmin(); await loadNewsPublic(); });
+            }
+            function editNews(item){ editingNewsId=item.id; $('newsTitleInput').value=item.title||''; $('newsDateInput').value=item.publish_date||''; $('newsBodyInput').value=item.body||''; $('newsImageInput').value=item.image_url||''; $('newsActiveInput').value=String(!!item.is_active); $('newsSortInput').value=item.sort_order||0; $('saveNewsBtn').textContent='Update Announcement'; }
+            async function deleteRecord(table, id) { if (!confirm('Delete this record?')) return; const { error } = await supabaseClient.from(table).delete().eq('id', id); if (error) adminMessage('Delete failed: ' + error.message, 'error'); else adminMessage('Record deleted.'); }
+            function renderRecordList(containerId, data, error, editFn, deleteFn) {
+                const wrap = $(containerId); wrap.innerHTML = '';
+                if (error) { wrap.textContent = error.message; return; }
+                if (!data || !data.length) { wrap.textContent = 'No records found.'; return; }
+                const table = document.createElement('table'); table.className = 'record-table'; table.innerHTML = '<thead><tr><th>Title</th><th>Date / Order</th><th>Status</th><th>Actions</th></tr></thead>';
+                const tbody = document.createElement('tbody');
+                data.forEach(item => { const tr = document.createElement('tr');
+                    const title = document.createElement('td'); title.textContent = item.title || item.subject || item.email || 'Untitled';
+                    const date = document.createElement('td'); date.textContent = item.event_date || item.publish_date || item.sort_order || '';
+                    const status = document.createElement('td'); status.innerHTML = '<span class="badge">' + (item.is_active === false ? 'Inactive' : 'Active') + '</span>';
+                    const actions = document.createElement('td'); const edit = document.createElement('button'); edit.className='btn btn--secondary btn--sm'; edit.textContent='Edit'; edit.type='button'; edit.addEventListener('click',()=>editFn(item)); const del=document.createElement('button'); del.className='btn btn--danger btn--sm'; del.type='button'; del.textContent='Delete'; del.addEventListener('click',()=>deleteFn(item)); actions.append(edit, document.createTextNode(' '), del); tr.append(title,date,status,actions); tbody.appendChild(tr); });
+                table.appendChild(tbody); wrap.appendChild(table);
+            }
+            async function loadEnquiries() {
+                if (!supabaseClient || !adminSession) { adminMessage('Login required.', 'error'); return; }
+                const filter = $('enquiryFilter').value; let query = supabaseClient.from('enquiries').select('*').order('created_at', { ascending: false });
+                if (filter === 'admissions' || filter === 'contact') query = query.eq('type', filter);
+                if (filter === 'unread') query = query.eq('is_read', false);
+                if (filter === 'responded') query = query.eq('status', 'responded');
+                const { data, error } = await query;
+                if (error) { adminMessage('Could not load enquiries: ' + error.message, 'error'); return; }
+                enquiriesCache = data || []; renderEnquiries(enquiriesCache);
+            }
+            function renderEnquiries(data) {
+                const wrap = $('enquiriesAdminList'); wrap.innerHTML = '';
+                if (!data.length) { wrap.textContent = 'No enquiries found.'; return; }
+                const table = document.createElement('table'); table.className = 'record-table'; table.innerHTML = '<thead><tr><th>Type</th><th>Sender</th><th>Message</th><th>Status</th><th>Actions</th></tr></thead>';
+                const tbody = document.createElement('tbody');
+                data.forEach(item => { const tr = document.createElement('tr');
+                    const type = document.createElement('td'); type.textContent = item.type || '';
+                    const sender = document.createElement('td'); sender.textContent = [item.name, item.parent_name, item.email, item.phone].filter(Boolean).join(' • ');
+                    const msg = document.createElement('td'); msg.textContent = [item.subject, item.student_name, item.message].filter(Boolean).join(' | ');
+                    const status = document.createElement('td'); status.innerHTML = '<span class="badge">' + (item.status || (item.is_read ? 'read' : 'new')) + '</span>';
+                    const actions = document.createElement('td');
+                    const read = document.createElement('button'); read.className='btn btn--secondary btn--sm'; read.type='button'; read.textContent='Mark Read'; read.addEventListener('click', async()=>{ await supabaseClient.from('enquiries').update({is_read:true,status:'read'}).eq('id',item.id); await loadEnquiries(); });
+                    const resp = document.createElement('button'); resp.className='btn btn--secondary btn--sm'; resp.type='button'; resp.textContent='Responded'; resp.addEventListener('click', async()=>{ await supabaseClient.from('enquiries').update({is_read:true,status:'responded',responded_at:new Date().toISOString()}).eq('id',item.id); await loadEnquiries(); });
+                    const del = document.createElement('button'); del.className='btn btn--danger btn--sm'; del.type='button'; del.textContent='Delete'; del.addEventListener('click', async()=>{ await deleteRecord('enquiries', item.id); await loadEnquiries(); });
+                    actions.append(read, document.createTextNode(' '), resp, document.createTextNode(' '), del); tr.append(type,sender,msg,status,actions); tbody.appendChild(tr); });
+                table.appendChild(tbody); wrap.appendChild(table);
+            }
+            function exportCSV() {
+                if (!enquiriesCache.length) { adminMessage('Load enquiries first.', 'error'); return; }
+                const cols = ['created_at','type','name','parent_name','student_name','email','phone','subject','message','status','is_read'];
+                const lines = [cols.join(',')].concat(enquiriesCache.map(row => cols.map(c => '"' + String(row[c] ?? '').replace(/"/g, '""') + '"').join(',')));
+                downloadText('school-enquiries.csv', lines.join('\n'), 'text/csv');
+            }
+            function downloadText(filename, content, type) { const blob = new Blob([content], { type }); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = filename; a.click(); URL.revokeObjectURL(url); }
+            function exportConfig() { downloadText('school-website-settings.json', JSON.stringify(currentConfig, null, 2), 'application/json'); }
+            function importConfig() { const file = $('importConfigFile').files[0]; if (!file) { adminMessage('Select a JSON backup first.', 'error'); return; } const reader = new FileReader(); reader.onload = () => { try { currentConfig = deepMerge(clone(DEFAULT_CONFIG), JSON.parse(reader.result)); renderSite(); adminMessage('Settings imported. Click Save Website Settings to store them in Supabase.'); } catch(e){ adminMessage('Invalid JSON file.', 'error'); } }; reader.readAsText(file); }
+            function resetConfig() { if (!confirm('Restore the default template settings?')) return; currentConfig = clone(DEFAULT_CONFIG); renderSite(); adminMessage('Default template restored. Click Save Website Settings to store it.'); }
+            function openLightbox(src, alt) { $('lightboxImg').src = src; $('lightboxImg').alt = alt || ''; $('lightbox').classList.add('active'); $('lightbox').setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; }
+            function closeLightbox() { $('lightbox').classList.remove('active'); $('lightbox').setAttribute('aria-hidden','true'); document.body.style.overflow = ''; $('lightboxImg').src = ''; }
+            function openAdmin() { $('adminModal').classList.add('active'); $('adminModal').setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; checkExistingSession(); }
+            function closeAdmin() { $('adminModal').classList.remove('active'); $('adminModal').setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
+            function bindEvents() {
+                $('hamburger').addEventListener('click', () => { $('hamburger').classList.toggle('active'); $('mobileNav').classList.toggle('active'); });
+                document.querySelectorAll('.mobile-nav__link').forEach(link => link.addEventListener('click', () => { $('hamburger').classList.remove('active'); $('mobileNav').classList.remove('active'); }));
+                window.addEventListener('scroll', () => { $('header').classList.toggle('header--scrolled', window.scrollY > 10); $('backToTop').classList.toggle('visible', window.scrollY > 300); }, { passive: true });
+                $('backToTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+                $('lightboxClose').addEventListener('click', closeLightbox); $('lightbox').addEventListener('click', e => { if (e.target === $('lightbox')) closeLightbox(); });
+                $('admissionsForm').addEventListener('submit', e => { e.preventDefault(); submitEnquiry(e.target, 'admissions', $('admissionsSuccess'), $('admissionsError')); });
+                $('contactForm').addEventListener('submit', e => { e.preventDefault(); submitEnquiry(e.target, 'contact', $('contactSuccess'), $('contactError')); });
+                $('adminOpenBtn').addEventListener('click', openAdmin); $('adminCloseBtn').addEventListener('click', closeAdmin); $('adminModal').addEventListener('click', e => { if (e.target === $('adminModal')) closeAdmin(); });
+                $('adminLoginBtn').addEventListener('click', adminLogin); $('adminSignOutBtn').addEventListener('click', adminSignOut); $('adminRefreshBtn').addEventListener('click', async () => { await loadSettings(); renderSite(); await loadEventsPublic(); await loadGalleryPublic(); await loadNewsPublic(); adminMessage('Website content refreshed.'); });
+                document.querySelectorAll('.admin-tab').forEach(tab => tab.addEventListener('click', () => { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active')); tab.classList.add('active'); $(tab.dataset.panel).classList.add('active'); }));
+                bindConfigInputs();
+                document.querySelectorAll('[id^="saveConfigBtn"]').forEach(btn => btn.addEventListener('click', saveSettings));
+                document.querySelectorAll('[data-upload-target]').forEach(btn => btn.addEventListener('click', () => uploadAsset(btn.dataset.fileInput, btn.dataset.uploadTarget)));
+                $('applyPresetBtn').addEventListener('click', () => { currentConfig.theme = clone(THEME_PRESETS[$('themePresetSelect').value] || THEME_PRESETS.green); renderSite(); });
+                $('addAcademicBtn').addEventListener('click', () => { currentConfig.academics.cards.push({ icon:'📘', title:'New Programme', text:'Programme description.' }); renderSite(); });
+                $('addStepBtn').addEventListener('click', () => { currentConfig.admissions.steps.push({ title:'New Step', text:'Step description.' }); renderSite(); });
+                $('eventUploadBtn').addEventListener('click', () => uploadAsset('eventUpload', 'eventImageUrl')); $('saveEventBtn').addEventListener('click', saveEvent); $('clearEventBtn').addEventListener('click', clearEventForm); $('loadEventsAdminBtn').addEventListener('click', loadEventsAdmin);
+                $('galleryUploadBtn').addEventListener('click', () => uploadAsset('galleryUpload', 'galleryImageUrl')); $('saveGalleryBtn').addEventListener('click', saveGallery); $('clearGalleryBtn').addEventListener('click', clearGalleryForm); $('loadGalleryAdminBtn').addEventListener('click', loadGalleryAdmin);
+                $('newsUploadBtn').addEventListener('click', () => uploadAsset('newsUpload', 'newsImageInput')); $('saveNewsBtn').addEventListener('click', saveNews); $('clearNewsBtn').addEventListener('click', clearNewsForm); $('loadNewsAdminBtn').addEventListener('click', loadNewsAdmin);
+                $('loadEnquiriesBtn').addEventListener('click', loadEnquiries); $('exportEnquiriesBtn').addEventListener('click', exportCSV);
+                $('exportConfigBtn').addEventListener('click', exportConfig); $('importConfigBtn').addEventListener('click', importConfig); $('resetConfigBtn').addEventListener('click', resetConfig);
+                document.addEventListener('keydown', e => { if (e.key === 'Escape') { if ($('lightbox').classList.contains('active')) closeLightbox(); if ($('adminModal').classList.contains('active')) closeAdmin(); } });
+            }
+            async function init() {
+                bindEvents();
+                currentConfig = clone(DEFAULT_CONFIG);
+                await loadSettings();
+                renderSite();
+                await loadEventsPublic(); await loadGalleryPublic(); await loadNewsPublic();
+                if (window.location.hash === '#admin') openAdmin();
+            }
+            init();
+        })();
+    </script>
+</body>
+</html>
