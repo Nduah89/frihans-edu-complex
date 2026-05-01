@@ -193,6 +193,9 @@
         .record-table th, .record-table td { border-bottom: 1px solid var(--clr-border); padding: 10px 8px; text-align: left; vertical-align: top; }
         .record-table th { background: #f5f8f5; font-family: var(--font-heading); font-size: 0.82rem; }
         .badge { display: inline-flex; align-items: center; border-radius: 50px; padding: 2px 8px; background: #eef3ee; color: var(--clr-primary-dark); font-size: 0.75rem; font-weight: 700; }
+        .enquiry-contact-detail { display: block; color: var(--clr-text-light); font-size: 0.78rem; line-height: 1.45; margin-top: 2px; }
+        .enquiry-action-group { display: flex; flex-wrap: wrap; gap: 6px; min-width: 210px; }
+        .enquiry-no-contact { display: inline-flex; align-items: center; color: var(--clr-text-light); font-size: 0.78rem; padding: 6px 0; }
         .hidden { display: none !important; }
         @media (max-width: 1023px) {
             h2 { font-size: 1.8rem; }
@@ -221,6 +224,8 @@
             .gallery-item img { height: 220px; }
             .section { padding: 54px 0; }
             .admin-dialog { width: 98vw; max-height: 94vh; }
+            .record-table { display: block; overflow-x: auto; white-space: nowrap; }
+            .enquiry-action-group { min-width: 260px; }
             .admin-header { align-items: flex-start; flex-direction: column; }
         }
         @media (max-width: 420px) {
@@ -371,6 +376,7 @@
                         <form id="contactForm" aria-label="Contact form" novalidate>
                             <div class="form-group"><label for="contactName">Your Name *</label><input type="text" id="contactName" name="name" required></div>
                             <div class="form-group"><label for="contactEmail">Email Address *</label><input type="email" id="contactEmail" name="email" required></div>
+                            <div class="form-group"><label for="contactPhone">Phone Number</label><input type="tel" id="contactPhone" name="phone" placeholder="Optional contact number"></div>
                             <div class="form-group"><label for="contactSubject">Subject</label><input type="text" id="contactSubject" name="subject"></div>
                             <div class="form-group"><label for="contactMessage">Message *</label><textarea id="contactMessage" name="message" rows="3" required></textarea></div>
                             <button type="submit" class="btn btn--primary" style="width:100%;">Send Message</button>
@@ -899,6 +905,55 @@
                     const actions = document.createElement('td'); const edit = document.createElement('button'); edit.className='btn btn--secondary btn--sm'; edit.textContent='Edit'; edit.type='button'; edit.addEventListener('click',()=>editFn(item)); const del=document.createElement('button'); del.className='btn btn--danger btn--sm'; del.type='button'; del.textContent='Delete'; del.addEventListener('click',()=>deleteFn(item)); actions.append(edit, document.createTextNode(' '), del); tr.append(title,date,status,actions); tbody.appendChild(tr); });
                 table.appendChild(tbody); wrap.appendChild(table);
             }
+            function getEnquirySearchText(item) {
+                return [item.email, item.phone, item.message, item.subject, item.name, item.parent_name, item.student_name]
+                    .filter(Boolean)
+                    .join(' ');
+            }
+            function extractFirstEmailFromText(text) {
+                const match = String(text || '').match(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i);
+                return match ? match[0] : '';
+            }
+            function extractFirstPhoneFromText(text) {
+                const matches = String(text || '').match(/(?:\+?\d[\d\s().-]{7,}\d)/g) || [];
+                for (const raw of matches) {
+                    const digits = raw.replace(/\D/g, '');
+                    if (digits.length >= 8 && digits.length <= 15) return raw.trim();
+                }
+                return '';
+            }
+            function normalizePhoneForLink(phone) {
+                const cleaned = String(phone || '').trim().replace(/[^\d+]/g, '');
+                if (!cleaned) return '';
+                return cleaned.startsWith('+') ? '+' + cleaned.slice(1).replace(/\+/g, '') : cleaned.replace(/\+/g, '');
+            }
+            function getEnquiryReplyContacts(item) {
+                const searchText = getEnquirySearchText(item);
+                const email = String(item.email || '').trim() || extractFirstEmailFromText(searchText);
+                const rawPhone = String(item.phone || '').trim() || extractFirstPhoneFromText(searchText);
+                const phone = normalizePhoneForLink(rawPhone);
+                return { email, rawPhone, phone };
+            }
+            function createReplyLink(label, href, variant = 'secondary') {
+                const link = document.createElement('a');
+                link.className = 'btn btn--' + variant + ' btn--sm';
+                link.href = href;
+                link.textContent = label;
+                return link;
+            }
+            function buildReplyEmailHref(item, email) {
+                const subjectSource = item.subject || item.type || 'School enquiry';
+                const subject = /^re:/i.test(subjectSource) ? subjectSource : 'Re: ' + subjectSource;
+                const greetingName = item.name || item.parent_name || 'Parent/Guardian';
+                const body = 'Hello ' + greetingName + ',\n\nThank you for contacting us.\n\n';
+                return 'mailto:' + encodeURIComponent(email) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+            }
+            function markEnquiryResponded(item) {
+                if (!supabaseClient || !item || !item.id) return;
+                supabaseClient.from('enquiries').update({ is_read: true, status: 'responded', responded_at: new Date().toISOString() }).eq('id', item.id).then(({ error }) => {
+                    if (error) console.error('Could not mark enquiry as responded:', error);
+                });
+            }
             async function loadEnquiries() {
                 if (!supabaseClient || !adminSession) { adminMessage('Login required.', 'error'); return; }
                 const filter = $('enquiryFilter').value; let query = supabaseClient.from('enquiries').select('*').order('created_at', { ascending: false });
@@ -912,18 +967,53 @@
             function renderEnquiries(data) {
                 const wrap = $('enquiriesAdminList'); wrap.innerHTML = '';
                 if (!data.length) { wrap.textContent = 'No enquiries found.'; return; }
-                const table = document.createElement('table'); table.className = 'record-table'; table.innerHTML = '<thead><tr><th>Type</th><th>Sender</th><th>Message</th><th>Status</th><th>Actions</th></tr></thead>';
+                const table = document.createElement('table'); table.className = 'record-table';
+                const head = document.createElement('thead'); head.innerHTML = '<tr><th>Type</th><th>Sender</th><th>Message</th><th>Status</th><th>Reply / Actions</th></tr>'; table.appendChild(head);
                 const tbody = document.createElement('tbody');
-                data.forEach(item => { const tr = document.createElement('tr');
+                data.forEach(item => {
+                    const replyContacts = getEnquiryReplyContacts(item);
+                    const tr = document.createElement('tr');
                     const type = document.createElement('td'); type.textContent = item.type || '';
-                    const sender = document.createElement('td'); sender.textContent = [item.name, item.parent_name, item.email, item.phone].filter(Boolean).join(' • ');
-                    const msg = document.createElement('td'); msg.textContent = [item.subject, item.student_name, item.message].filter(Boolean).join(' | ');
-                    const status = document.createElement('td'); status.innerHTML = '<span class="badge">' + (item.status || (item.is_read ? 'read' : 'new')) + '</span>';
+                    const sender = document.createElement('td');
+                    const senderMain = document.createElement('strong');
+                    senderMain.textContent = [item.name, item.parent_name].filter(Boolean).join(' • ') || 'Sender';
+                    sender.appendChild(senderMain);
+                    if (item.student_name) {
+                        const student = document.createElement('span'); student.className = 'enquiry-contact-detail'; student.textContent = 'Student: ' + item.student_name; sender.appendChild(student);
+                    }
+                    if (replyContacts.email) {
+                        const emailLine = document.createElement('span'); emailLine.className = 'enquiry-contact-detail'; emailLine.textContent = 'Email: ' + replyContacts.email; sender.appendChild(emailLine);
+                    }
+                    if (replyContacts.rawPhone || replyContacts.phone) {
+                        const phoneLine = document.createElement('span'); phoneLine.className = 'enquiry-contact-detail'; phoneLine.textContent = 'Phone: ' + (replyContacts.rawPhone || replyContacts.phone); sender.appendChild(phoneLine);
+                    }
+                    const msg = document.createElement('td'); msg.textContent = [item.subject, item.message].filter(Boolean).join(' | ');
+                    const status = document.createElement('td');
+                    const statusBadge = document.createElement('span'); statusBadge.className = 'badge'; statusBadge.textContent = item.status || (item.is_read ? 'read' : 'new'); status.appendChild(statusBadge);
                     const actions = document.createElement('td');
+                    const group = document.createElement('div'); group.className = 'enquiry-action-group';
+                    if (replyContacts.email) {
+                        const emailReply = createReplyLink('Reply Email', buildReplyEmailHref(item, replyContacts.email), 'primary');
+                        emailReply.addEventListener('click', () => markEnquiryResponded(item));
+                        group.appendChild(emailReply);
+                    }
+                    if (replyContacts.phone) {
+                        const callReply = createReplyLink('Call Phone', 'tel:' + replyContacts.phone, 'secondary');
+                        callReply.addEventListener('click', () => markEnquiryResponded(item));
+                        const smsReply = createReplyLink('Send SMS', 'sms:' + replyContacts.phone + '?body=' + encodeURIComponent('Hello, thank you for contacting us.'), 'secondary');
+                        smsReply.addEventListener('click', () => markEnquiryResponded(item));
+                        group.append(callReply, smsReply);
+                    }
+                    if (!replyContacts.email && !replyContacts.phone) {
+                        const none = document.createElement('span'); none.className = 'enquiry-no-contact'; none.textContent = 'No reply email or phone found'; group.appendChild(none);
+                    }
                     const read = document.createElement('button'); read.className='btn btn--secondary btn--sm'; read.type='button'; read.textContent='Mark Read'; read.addEventListener('click', async()=>{ await supabaseClient.from('enquiries').update({is_read:true,status:'read'}).eq('id',item.id); await loadEnquiries(); });
                     const resp = document.createElement('button'); resp.className='btn btn--secondary btn--sm'; resp.type='button'; resp.textContent='Responded'; resp.addEventListener('click', async()=>{ await supabaseClient.from('enquiries').update({is_read:true,status:'responded',responded_at:new Date().toISOString()}).eq('id',item.id); await loadEnquiries(); });
                     const del = document.createElement('button'); del.className='btn btn--danger btn--sm'; del.type='button'; del.textContent='Delete'; del.addEventListener('click', async()=>{ await deleteRecord('enquiries', item.id); await loadEnquiries(); });
-                    actions.append(read, document.createTextNode(' '), resp, document.createTextNode(' '), del); tr.append(type,sender,msg,status,actions); tbody.appendChild(tr); });
+                    group.append(read, resp, del);
+                    actions.appendChild(group);
+                    tr.append(type,sender,msg,status,actions); tbody.appendChild(tr);
+                });
                 table.appendChild(tbody); wrap.appendChild(table);
             }
             function exportCSV() {
