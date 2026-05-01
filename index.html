@@ -10,6 +10,9 @@
     <meta property="og:description" content="Nurturing Minds, Growing Futures">
     <meta property="og:type" content="website">
     <meta property="og:image" content="">
+    <link rel="icon" type="image/svg+xml" id="siteFavicon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%233A7D44'/%3E%3Ctext x='32' y='41' font-family='Arial, sans-serif' font-size='24' font-weight='700' text-anchor='middle' fill='white'%3EGA%3C/text%3E%3C/svg%3E">
+    <link rel="shortcut icon" id="siteShortcutIcon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%233A7D44'/%3E%3Ctext x='32' y='41' font-family='Arial, sans-serif' font-size='24' font-weight='700' text-anchor='middle' fill='white'%3EGA%3C/text%3E%3C/svg%3E">
+    <link rel="apple-touch-icon" id="siteAppleTouchIcon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%233A7D44'/%3E%3Ctext x='32' y='41' font-family='Arial, sans-serif' font-size='24' font-weight='700' text-anchor='middle' fill='white'%3EGA%3C/text%3E%3C/svg%3E">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -76,9 +79,10 @@
         .header { position: sticky; top: 0; z-index: 1000; background: var(--clr-header-bg); box-shadow: 0 1px 6px var(--clr-shadow); height: var(--header-height); transition: box-shadow var(--transition-smooth), background var(--transition-fast); }
         .header--scrolled { box-shadow: 0 3px 18px var(--clr-shadow-hover); }
         .header__inner { height: var(--header-height); max-width: var(--max-width); margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
-        .header__logo { display: flex; align-items: center; gap: 10px; font-family: var(--font-heading); font-weight: 800; font-size: 1.4rem; color: var(--clr-primary-dark); }
-        .header__logo-img { width: 44px; height: 44px; border-radius: var(--radius-sm); object-fit: cover; display: none; }
-        .header__logo-icon { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; background: linear-gradient(135deg, var(--clr-primary), var(--clr-primary-light)); color: var(--clr-white); border-radius: var(--radius-sm); font-size: 1.25rem; font-weight: 800; }
+        .header__logo { display: flex; align-items: center; gap: 10px; min-width: 0; font-family: var(--font-heading); font-weight: 800; font-size: 1.4rem; line-height: 1.08; color: var(--clr-primary-dark); }
+        .header__logo-img { width: 44px; height: 44px; flex: 0 0 44px; border-radius: var(--radius-sm); object-fit: cover; display: none; }
+        .header__logo-icon { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; flex: 0 0 44px; background: linear-gradient(135deg, var(--clr-primary), var(--clr-primary-light)); color: var(--clr-white); border-radius: var(--radius-sm); font-size: 1.25rem; font-weight: 800; }
+        #siteNameText { display: block; min-width: 0; line-height: 1.08; }
         .header__nav-list { display: flex; align-items: center; gap: 4px; }
         .header__nav-link { display: block; padding: 8px 13px; font-family: var(--font-heading); font-weight: 500; font-size: 0.9rem; color: var(--clr-text-dark); border-radius: var(--radius-pill); transition: all var(--transition-fast); }
         .header__nav-link:hover { background: rgba(58, 125, 68, 0.1); color: var(--clr-primary-dark); }
@@ -202,9 +206,14 @@
             .admin-tab { width: auto; }
         }
         @media (max-width: 767px) {
-            :root { --header-height: 64px; }
+            :root { --header-height: 68px; }
+            .header__inner { padding: 0 14px; gap: 10px; overflow: hidden; }
             .header__nav { display: none; }
-            .hamburger { display: flex; }
+            .header__logo { flex: 1 1 auto; max-width: calc(100% - 56px); gap: 8px; font-size: clamp(1.04rem, 4.6vw, 1.18rem); line-height: 1.08; overflow: hidden; }
+            .header__logo-img, .header__logo-icon { width: 42px; height: 42px; flex-basis: 42px; }
+            .header__logo-icon { font-size: 1rem; }
+            #siteNameText { max-width: calc(100vw - 128px); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; line-height: 1.08; overflow-wrap: normal; word-break: normal; }
+            .hamburger { display: flex; flex: 0 0 44px; }
             .hero { min-height: 75vh; }
             .hero__title { font-size: 1.9rem; }
             .hero__cta-group { flex-direction: column; align-items: center; }
@@ -213,6 +222,13 @@
             .section { padding: 54px 0; }
             .admin-dialog { width: 98vw; max-height: 94vh; }
             .admin-header { align-items: flex-start; flex-direction: column; }
+        }
+        @media (max-width: 420px) {
+            .header__inner { padding: 0 12px; gap: 8px; }
+            .header__logo { gap: 7px; font-size: clamp(0.95rem, 4.4vw, 1.08rem); max-width: calc(100% - 52px); }
+            .header__logo-img, .header__logo-icon { width: 40px; height: 40px; flex-basis: 40px; }
+            #siteNameText { max-width: calc(100vw - 116px); }
+            .hamburger { flex-basis: 42px; width: 42px; height: 42px; }
         }
     </style>
 </head>
@@ -513,6 +529,47 @@
                 const el = document.querySelector(selector);
                 if (el) el.setAttribute(attr, value || '');
             }
+
+            function getComputedPrimaryColor() {
+                return getComputedStyle(document.documentElement).getPropertyValue('--clr-primary').trim() || '#3A7D44';
+            }
+            function encodeSvgForDataUrl(svg) {
+                return 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+            }
+            function getInitialsFaviconDataUrl() {
+                const initials = String(currentConfig.school.logoInitials || currentConfig.school.name || 'S')
+                    .replace(/[^A-Za-z0-9]/g, '')
+                    .slice(0, 3)
+                    .toUpperCase() || 'S';
+                const primary = getComputedPrimaryColor();
+                const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+                    <rect width="64" height="64" rx="14" fill="${primary}"/>
+                    <text x="32" y="41" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" text-anchor="middle" fill="#ffffff">${initials}</text>
+                </svg>`;
+                return encodeSvgForDataUrl(svg);
+            }
+            function setOrCreateIconLink(id, rel, href, type) {
+                let link = document.getElementById(id);
+                if (!link) {
+                    link = document.createElement('link');
+                    link.id = id;
+                    link.rel = rel;
+                    document.head.appendChild(link);
+                }
+                if (type) {
+                    link.type = type;
+                } else {
+                    link.removeAttribute('type');
+                }
+                link.href = href;
+            }
+            function updateBrowserTabLogo() {
+                const configuredLogo = safeUrl(currentConfig.school.logoUrl || '');
+                const faviconHref = configuredLogo || getInitialsFaviconDataUrl();
+                setOrCreateIconLink('siteFavicon', 'icon', faviconHref, configuredLogo ? undefined : 'image/svg+xml');
+                setOrCreateIconLink('siteShortcutIcon', 'shortcut icon', faviconHref);
+                setOrCreateIconLink('siteAppleTouchIcon', 'apple-touch-icon', faviconHref);
+            }
             function applyTheme() {
                 const t = currentConfig.theme || DEFAULT_CONFIG.theme;
                 const root = document.documentElement.style;
@@ -532,6 +589,7 @@
                 setMeta('meta[property="og:title"]', 'content', currentConfig.seo.ogTitle || currentConfig.school.name);
                 setMeta('meta[property="og:description"]', 'content', currentConfig.seo.ogDescription || currentConfig.hero.subtitle);
                 setMeta('meta[property="og:image"]', 'content', currentConfig.seo.ogImage || currentConfig.school.logoUrl || currentConfig.hero.backgroundImageUrl);
+                updateBrowserTabLogo();
                 setText('siteNameText', currentConfig.school.name);
                 setText('siteLogoText', currentConfig.school.logoInitials || 'S');
                 const logoImg = $('siteLogoImg');
