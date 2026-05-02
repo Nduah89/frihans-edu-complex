@@ -465,7 +465,7 @@
                         <div class="admin-panel" id="panel-gallery"><div class="admin-card"><h3>Gallery Management</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input id="galleryTitle"></div><div class="admin-field"><label>Alt Text</label><input id="galleryAlt"></div><div class="admin-field admin-field--full"><label>Image URL</label><input id="galleryImageUrl"><div class="admin-actions"><input type="file" id="galleryUpload" accept="image/*"><button class="btn btn--secondary btn--sm" id="galleryUploadBtn" type="button">Upload Gallery Image</button></div></div><div class="admin-field"><label>Active</label><select id="galleryActive"><option value="true">Active</option><option value="false">Inactive</option></select></div><div class="admin-field"><label>Sort Order</label><input type="number" id="gallerySortOrder" value="0"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveGalleryBtn" type="button">Add Gallery Item</button><button class="btn btn--secondary" id="clearGalleryBtn" type="button">Clear Form</button><button class="btn btn--secondary" id="loadGalleryAdminBtn" type="button">Refresh Gallery</button></div></div><div class="admin-card"><h3>Multiple Gallery Image Upload</h3><p class="admin-note">Select several images at once and the system will upload them and add them directly to the live gallery.</p><div class="admin-actions"><input type="file" id="galleryMultipleUpload" accept="image/*" multiple><button class="btn btn--secondary" id="galleryMultipleUploadBtn" type="button">Upload Multiple Gallery Images</button></div></div><div class="admin-card"><h3>Existing Gallery</h3><div id="galleryAdminList"></div></div></div>
                         <div class="admin-panel" id="panel-news"><div class="admin-card"><h3>News & Announcements</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input id="newsTitleInput"></div><div class="admin-field"><label>Publish Date</label><input type="date" id="newsDateInput"></div><div class="admin-field admin-field--full"><label>Body</label><textarea rows="3" id="newsBodyInput"></textarea></div><div class="admin-field admin-field--full"><label>Image URL</label><input id="newsImageInput"><div class="admin-actions"><input type="file" id="newsUpload" accept="image/*"><button class="btn btn--secondary btn--sm" id="newsUploadBtn" type="button">Upload News Image</button></div></div><div class="admin-field"><label>Active</label><select id="newsActiveInput"><option value="true">Active</option><option value="false">Inactive</option></select></div><div class="admin-field"><label>Sort Order</label><input type="number" id="newsSortInput" value="0"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveNewsBtn" type="button">Add Announcement</button><button class="btn btn--secondary" id="clearNewsBtn" type="button">Clear Form</button><button class="btn btn--secondary" id="loadNewsAdminBtn" type="button">Refresh News</button></div></div><div class="admin-card"><h3>Existing News</h3><div id="newsAdminList"></div></div></div>
                         <div class="admin-panel" id="panel-enquiries"><div class="admin-card"><h3>Enquiries Management</h3><div class="admin-grid"><div class="admin-field"><label>Filter</label><select id="enquiryFilter"><option value="all">All</option><option value="admissions">Admissions</option><option value="contact">Contact</option><option value="unread">Unread</option><option value="responded">Responded</option></select></div></div><div class="admin-actions"><button class="btn btn--secondary" id="loadEnquiriesBtn" type="button">Load Enquiries</button><button class="btn btn--secondary" id="exportEnquiriesBtn" type="button">Export CSV</button></div></div><div class="admin-card"><h3>Messages</h3><div id="enquiriesAdminList"></div></div></div>
-                        <div class="admin-panel" id="panel-contact"><div class="admin-card"><h3>Contact and Google Map</h3><div class="admin-grid"><div class="admin-field admin-field--full"><label>Address</label><textarea rows="3" data-config-path="contact.address"></textarea></div><div class="admin-field"><label>Phone</label><input data-config-path="contact.phone"></div><div class="admin-field"><label>Email</label><input data-config-path="contact.email"></div><div class="admin-field"><label>WhatsApp</label><input data-config-path="contact.whatsapp"></div><div class="admin-field admin-field--full"><label>Google Maps Embed URL</label><input data-config-path="contact.mapEmbedUrl"></div></div></div><div class="admin-card"><h3>SEO and Social Sharing</h3><div class="admin-grid"><div class="admin-field"><label>Page Title</label><input data-config-path="seo.pageTitle"></div><div class="admin-field"><label>Keywords</label><input data-config-path="seo.keywords"></div><div class="admin-field admin-field--full"><label>Meta Description</label><textarea rows="3" data-config-path="seo.description"></textarea></div><div class="admin-field"><label>Open Graph Title</label><input data-config-path="seo.ogTitle"></div><div class="admin-field"><label>Open Graph Image URL</label><input data-config-path="seo.ogImage"></div><div class="admin-field admin-field--full"><label>Open Graph Description</label><textarea rows="3" data-config-path="seo.ogDescription"></textarea></div><div class="admin-field"><label>Facebook URL</label><input data-config-path="social.facebook"></div><div class="admin-field"><label>X/Twitter URL</label><input data-config-path="social.twitter"></div><div class="admin-field"><label>Instagram URL</label><input data-config-path="social.instagram"></div><div class="admin-field"><label>YouTube URL</label><input data-config-path="social.youtube"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn7" type="button">Save Website Settings</button></div></div></div>
+                        <div class="admin-panel" id="panel-contact"><div class="admin-card"><h3>Contact and Google Map</h3><div class="admin-grid"><div class="admin-field admin-field--full"><label>Address</label><textarea rows="3" data-config-path="contact.address"></textarea></div><div class="admin-field"><label>Phone</label><input data-config-path="contact.phone"></div><div class="admin-field"><label>Email</label><input data-config-path="contact.email"></div><div class="admin-field"><label>WhatsApp</label><input data-config-path="contact.whatsapp"></div><div class="admin-field admin-field--full"><label>Google Maps Embed URL or Iframe Code</label><textarea rows="4" data-config-path="contact.mapEmbedUrl" placeholder="Paste the full Google Maps iframe code or only the src URL from Share > Embed a map"></textarea><p class="admin-note">Use Google Maps, Share, Embed a map, Copy HTML. The system will extract and save only the safe map URL.</p></div></div></div><div class="admin-card"><h3>SEO and Social Sharing</h3><div class="admin-grid"><div class="admin-field"><label>Page Title</label><input data-config-path="seo.pageTitle"></div><div class="admin-field"><label>Keywords</label><input data-config-path="seo.keywords"></div><div class="admin-field admin-field--full"><label>Meta Description</label><textarea rows="3" data-config-path="seo.description"></textarea></div><div class="admin-field"><label>Open Graph Title</label><input data-config-path="seo.ogTitle"></div><div class="admin-field"><label>Open Graph Image URL</label><input data-config-path="seo.ogImage"></div><div class="admin-field admin-field--full"><label>Open Graph Description</label><textarea rows="3" data-config-path="seo.ogDescription"></textarea></div><div class="admin-field"><label>Facebook URL</label><input data-config-path="social.facebook"></div><div class="admin-field"><label>X/Twitter URL</label><input data-config-path="social.twitter"></div><div class="admin-field"><label>Instagram URL</label><input data-config-path="social.instagram"></div><div class="admin-field"><label>YouTube URL</label><input data-config-path="social.youtube"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn7" type="button">Save Website Settings</button></div></div></div>
                         <div class="admin-panel" id="panel-backup"><div class="admin-card"><h3>Backup and Restore</h3><p>Export the current website settings before making major changes. You can import the backup later if needed.</p><div class="admin-actions"><button class="btn btn--secondary" id="exportConfigBtn" type="button">Export Settings JSON</button><input type="file" id="importConfigFile" accept="application/json"><button class="btn btn--secondary" id="importConfigBtn" type="button">Import Settings JSON</button><button class="btn btn--danger" id="resetConfigBtn" type="button">Restore Default Template</button></div></div></div>
                     </section>
                 </div>
@@ -543,6 +543,39 @@
                     const parsed = new URL(url, window.location.href);
                     return ['http:', 'https:', 'mailto:', 'tel:'].includes(parsed.protocol) ? parsed.href : '';
                 } catch (e) { return ''; }
+            }
+            function decodeHtmlEntities(value) {
+                const textarea = document.createElement('textarea');
+                textarea.innerHTML = String(value || '');
+                return textarea.value;
+            }
+            function extractUrlFromIframeOrText(value) {
+                const raw = decodeHtmlEntities(String(value || '').trim());
+                if (!raw) return '';
+                const iframeSrcMatch = raw.match(/src\s*=\s*["']([^"']+)["']/i);
+                return (iframeSrcMatch ? iframeSrcMatch[1] : raw).trim();
+            }
+            function normalizeGoogleMapsEmbedInput(value) {
+                const candidate = extractUrlFromIframeOrText(value);
+                if (!candidate) return '';
+                const safe = safeUrl(candidate);
+                if (!safe) return '';
+                try {
+                    const parsed = new URL(safe);
+                    const host = parsed.hostname.toLowerCase();
+                    const isGoogleHost = host === 'google.com' || host.endsWith('.google.com') || host.includes('google.');
+                    const isShortMapLink = host === 'maps.app.goo.gl' || host === 'goo.gl';
+                    if (!isGoogleHost && !isShortMapLink) return '';
+                    if (isShortMapLink) return '';
+                    if (parsed.pathname.startsWith('/maps/embed')) return parsed.href;
+                    if (parsed.pathname.startsWith('/maps')) {
+                        if (!parsed.searchParams.has('output')) parsed.searchParams.set('output', 'embed');
+                        return parsed.href;
+                    }
+                    return '';
+                } catch (e) {
+                    return '';
+                }
             }
             function formatDate(value) {
                 if (!value) return '';
@@ -741,10 +774,20 @@
                     const body = document.createElement('div'); const strong = document.createElement('strong'); strong.textContent = item[1]; body.append(strong, document.createElement('br'), document.createTextNode(String(item[2])));
                     row.append(icon, body); wrap.appendChild(row);
                 });
-                if (currentConfig.contact.mapEmbedUrl && safeUrl(currentConfig.contact.mapEmbedUrl)) {
-                    const iframe = document.createElement('iframe'); iframe.className = 'map-frame'; iframe.loading = 'lazy'; iframe.allowFullscreen = true; iframe.referrerPolicy = 'no-referrer-when-downgrade'; iframe.src = currentConfig.contact.mapEmbedUrl; wrap.appendChild(iframe);
+                const mapUrl = normalizeGoogleMapsEmbedInput(currentConfig.contact.mapEmbedUrl);
+                if (mapUrl) {
+                    const iframe = document.createElement('iframe');
+                    iframe.className = 'map-frame';
+                    iframe.loading = 'lazy';
+                    iframe.allowFullscreen = true;
+                    iframe.referrerPolicy = 'no-referrer-when-downgrade';
+                    iframe.src = mapUrl;
+                    wrap.appendChild(iframe);
                 } else {
-                    const map = document.createElement('div'); map.className = 'map-placeholder'; map.textContent = 'Google Maps embed can be added from the School Admin editor.'; wrap.appendChild(map);
+                    const map = document.createElement('div');
+                    map.className = 'map-placeholder';
+                    map.textContent = currentConfig.contact.mapEmbedUrl ? 'The saved Google Maps value is not a valid embed URL. Paste the full iframe code from Google Maps, Share, Embed a map.' : 'Google Maps embed can be added from the School Admin editor.';
+                    wrap.appendChild(map);
                 }
             }
             function renderSocial() {
@@ -771,6 +814,16 @@
             }
             async function saveSettings() {
                 if (!supabaseClient || !adminSession) { adminMessage('Please login as School Admin before saving.', 'error'); return; }
+                if (currentConfig.contact && currentConfig.contact.mapEmbedUrl) {
+                    const normalizedMapUrl = normalizeGoogleMapsEmbedInput(currentConfig.contact.mapEmbedUrl);
+                    if (!normalizedMapUrl) {
+                        adminMessage('Google Maps value is not valid. Please paste the full iframe code from Google Maps: Share > Embed a map > Copy HTML.', 'error');
+                        return;
+                    }
+                    currentConfig.contact.mapEmbedUrl = normalizedMapUrl;
+                    const mapInput = document.querySelector('[data-config-path="contact.mapEmbedUrl"]');
+                    if (mapInput) mapInput.value = normalizedMapUrl;
+                }
                 const payload = { site_key: currentConfig.settingsKey, config_json: currentConfig, updated_at: new Date().toISOString(), updated_by: adminSession.user.id };
                 const { error } = await supabaseClient.from('school_website_settings').upsert(payload, { onConflict: 'site_key' });
                 if (error) { adminMessage('Settings could not be saved: ' + error.message, 'error'); return; }
@@ -857,6 +910,16 @@
             function bindConfigInputs() {
                 document.querySelectorAll('[data-config-path]').forEach(input => {
                     input.addEventListener('input', () => { setPath(currentConfig, input.dataset.configPath, input.value); renderSite(); });
+                    if (input.dataset.configPath === 'contact.mapEmbedUrl') {
+                        input.addEventListener('blur', () => {
+                            const normalizedMapUrl = normalizeGoogleMapsEmbedInput(input.value);
+                            if (normalizedMapUrl) {
+                                input.value = normalizedMapUrl;
+                                setPath(currentConfig, input.dataset.configPath, normalizedMapUrl);
+                                renderSite();
+                            }
+                        });
+                    }
                 });
             }
             function renderAdminArrayEditors() {
