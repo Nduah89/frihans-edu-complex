@@ -189,6 +189,14 @@
         .admin-message.error { background: #FFEBEE; color: #b71c1c; }
         .admin-list { display: grid; gap: 10px; }
         .admin-list-item { border: 1px solid var(--clr-border); border-radius: var(--radius-sm); padding: 12px; background: #fbfcfb; }
+        .admin-note { margin: 8px 0 14px; font-size: 0.9rem; color: var(--clr-text-light); }
+        .admin-code-gate { max-width: 520px; margin: 26px auto; }
+        .admin-code-change { display: none; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--clr-border); }
+        .admin-code-change.active { display: block; }
+        .media-list { display: grid; gap: 10px; margin-top: 12px; }
+        .media-list-item { display: grid; grid-template-columns: 86px 1fr auto; gap: 12px; align-items: center; border: 1px solid var(--clr-border); background: #fbfcfb; border-radius: var(--radius-sm); padding: 10px; }
+        .media-list-item img { width: 86px; height: 58px; object-fit: cover; border-radius: var(--radius-sm); background: #eef3ee; }
+        .media-list-url { font-size: 0.78rem; color: var(--clr-text-light); overflow-wrap: anywhere; }
         .record-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
         .record-table th, .record-table td { border-bottom: 1px solid var(--clr-border); padding: 10px 8px; text-align: left; vertical-align: top; }
         .record-table th { background: #f5f8f5; font-family: var(--font-heading); font-size: 0.82rem; }
@@ -410,7 +418,19 @@
             <div class="admin-body">
                 <div class="admin-message" id="adminMessage"></div>
                 <div class="admin-login" id="adminLoginBox">
-                    <div class="admin-card">
+                    <div class="admin-card admin-code-gate" id="adminAccessGate">
+                        <h3>Admin Access Code</h3>
+                        <p class="admin-note">Enter the private 8-character admin access code before the School Admin login form can open.</p>
+                        <div class="admin-field"><label for="adminGateCode">Access Code</label><input type="password" id="adminGateCode" autocomplete="off" placeholder="Enter access code"></div>
+                        <div class="admin-actions"><button class="btn btn--primary" id="verifyAccessCodeBtn" type="button">Continue to Login</button></div>
+                        <div class="admin-code-change" id="adminCodeChangeBox">
+                            <p class="admin-note">The default code must be changed before the admin login opens. If the new code is forgotten, enter the default code again to reset it.</p>
+                            <div class="admin-field"><label for="adminNewCode">New Access Code</label><input type="password" id="adminNewCode" autocomplete="new-password" placeholder="At least 8 characters"></div>
+                            <div class="admin-field" style="margin-top:12px;"><label for="adminConfirmCode">Confirm New Access Code</label><input type="password" id="adminConfirmCode" autocomplete="new-password" placeholder="Repeat new code"></div>
+                            <div class="admin-actions"><button class="btn btn--primary" id="changeAccessCodeBtn" type="button">Save New Code and Continue</button></div>
+                        </div>
+                    </div>
+                    <div class="admin-card hidden" id="adminLoginCard">
                         <h3>Admin Login</h3>
                         <div class="admin-field"><label for="adminEmail">Email</label><input type="email" id="adminEmail" autocomplete="username"></div>
                         <div class="admin-field" style="margin-top:12px;"><label for="adminPassword">Password</label><input type="password" id="adminPassword" autocomplete="current-password"></div>
@@ -423,6 +443,7 @@
                         <button class="admin-tab" data-panel="panel-theme" type="button">Theme</button>
                         <button class="admin-tab" data-panel="panel-home" type="button">Homepage</button>
                         <button class="admin-tab" data-panel="panel-about" type="button">About</button>
+                        <button class="admin-tab" data-panel="panel-principal" type="button">Principal</button>
                         <button class="admin-tab" data-panel="panel-academics" type="button">Academics</button>
                         <button class="admin-tab" data-panel="panel-admissions" type="button">Admissions</button>
                         <button class="admin-tab" data-panel="panel-events" type="button">Events</button>
@@ -435,12 +456,13 @@
                     <section class="admin-content">
                         <div class="admin-panel active" id="panel-identity"><div class="admin-card"><h3>School Identity</h3><div class="admin-grid"><div class="admin-field"><label>School Name</label><input data-config-path="school.name"></div><div class="admin-field"><label>Logo Initials</label><input data-config-path="school.logoInitials"></div><div class="admin-field admin-field--full"><label>Logo Image URL</label><input data-config-path="school.logoUrl"><div class="admin-actions"><input type="file" id="logoUpload" accept="image/*"><button class="btn btn--secondary btn--sm" data-upload-target="school.logoUrl" data-file-input="logoUpload" type="button">Upload Logo</button></div></div><div class="admin-field"><label>Established Text</label><input data-config-path="school.establishedText"></div><div class="admin-field"><label>Motto</label><input data-config-path="school.motto"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn1" type="button">Save Website Settings</button></div></div></div>
                         <div class="admin-panel" id="panel-theme"><div class="admin-card"><h3>Theme Presets</h3><div class="admin-grid"><div class="admin-field"><label>Preset</label><select id="themePresetSelect"><option value="green">Green Classic</option><option value="deepBlue">Deep Blue</option><option value="navyGold">Navy & Gold</option><option value="redWhite">Red & White</option><option value="purpleModern">Purple Modern</option></select></div></div><div class="admin-actions"><button class="btn btn--secondary" id="applyPresetBtn" type="button">Apply Selected Preset</button></div></div><div class="admin-card"><h3>Custom Colors</h3><div class="admin-grid admin-grid--3"><div class="admin-field"><label>Primary</label><input type="color" data-config-path="theme.primary"></div><div class="admin-field"><label>Primary Dark</label><input type="color" data-config-path="theme.primaryDark"></div><div class="admin-field"><label>Primary Light</label><input type="color" data-config-path="theme.primaryLight"></div><div class="admin-field"><label>Accent</label><input type="color" data-config-path="theme.accent"></div><div class="admin-field"><label>Accent Hover</label><input type="color" data-config-path="theme.accentHover"></div><div class="admin-field"><label>Header Background</label><input type="color" data-config-path="theme.headerBackground"></div><div class="admin-field"><label>Footer Background</label><input type="color" data-config-path="theme.footerBackground"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn2" type="button">Save Website Settings</button></div></div></div>
-                        <div class="admin-panel" id="panel-home"><div class="admin-card"><h3>Homepage Hero</h3><div class="admin-grid"><div class="admin-field"><label>Hero Tag</label><input data-config-path="hero.tag"></div><div class="admin-field"><label>Hero Title</label><input data-config-path="hero.title"></div><div class="admin-field admin-field--full"><label>Hero Subtitle</label><textarea rows="3" data-config-path="hero.subtitle"></textarea></div><div class="admin-field"><label>Primary Button Text</label><input data-config-path="hero.primaryCtaText"></div><div class="admin-field"><label>Primary Button Link</label><input data-config-path="hero.primaryCtaLink"></div><div class="admin-field"><label>Secondary Button Text</label><input data-config-path="hero.secondaryCtaText"></div><div class="admin-field"><label>Secondary Button Link</label><input data-config-path="hero.secondaryCtaLink"></div><div class="admin-field admin-field--full"><label>Hero Background Image URL</label><input data-config-path="hero.backgroundImageUrl"><div class="admin-actions"><input type="file" id="heroUpload" accept="image/*"><button class="btn btn--secondary btn--sm" data-upload-target="hero.backgroundImageUrl" data-file-input="heroUpload" type="button">Upload Hero Image</button></div></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn3" type="button">Save Website Settings</button></div></div></div>
-                        <div class="admin-panel" id="panel-about"><div class="admin-card"><h3>About Section</h3><div class="admin-grid"><div class="admin-field"><label>About Title</label><input data-config-path="about.title"></div><div class="admin-field admin-field--full"><label>About Subtitle</label><textarea rows="3" data-config-path="about.subtitle"></textarea></div></div><h3 style="margin-top:20px;">About Cards</h3><div class="admin-list" id="aboutCardsAdmin"></div><h3 style="margin-top:20px;">Principal Welcome</h3><div class="admin-grid"><div class="admin-field"><label>Principal Name</label><input data-config-path="principal.name"></div><div class="admin-field"><label>Principal Title</label><input data-config-path="principal.title"></div><div class="admin-field admin-field--full"><label>Principal Message</label><textarea rows="4" data-config-path="principal.message"></textarea></div><div class="admin-field admin-field--full"><label>Principal Photo URL</label><input data-config-path="principal.photoUrl"><div class="admin-actions"><input type="file" id="principalUpload" accept="image/*"><button class="btn btn--secondary btn--sm" data-upload-target="principal.photoUrl" data-file-input="principalUpload" type="button">Upload Principal Photo</button></div></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn4" type="button">Save Website Settings</button></div></div></div>
+                        <div class="admin-panel" id="panel-home"><div class="admin-card"><h3>Homepage Hero</h3><div class="admin-grid"><div class="admin-field"><label>Hero Tag</label><input data-config-path="hero.tag"></div><div class="admin-field"><label>Hero Title</label><input data-config-path="hero.title"></div><div class="admin-field admin-field--full"><label>Hero Subtitle</label><textarea rows="3" data-config-path="hero.subtitle"></textarea></div><div class="admin-field"><label>Primary Button Text</label><input data-config-path="hero.primaryCtaText"></div><div class="admin-field"><label>Primary Button Link</label><input data-config-path="hero.primaryCtaLink"></div><div class="admin-field"><label>Secondary Button Text</label><input data-config-path="hero.secondaryCtaText"></div><div class="admin-field"><label>Secondary Button Link</label><input data-config-path="hero.secondaryCtaLink"></div><div class="admin-field"><label>Slide Change Seconds</label><input type="number" min="1" max="60" data-config-path="hero.slideIntervalSeconds"></div><div class="admin-field admin-field--full"><label>Single Hero Background Image URL</label><input data-config-path="hero.backgroundImageUrl"><div class="admin-actions"><input type="file" id="heroUpload" accept="image/*"><button class="btn btn--secondary btn--sm" data-upload-target="hero.backgroundImageUrl" data-file-input="heroUpload" type="button">Upload Single Hero Image</button></div></div></div><div class="admin-actions"><button class="btn btn--secondary" id="addHeroImageUrlBtn" type="button">Add Single URL to Slideshow</button><input type="file" id="heroSlidesUpload" accept="image/*" multiple><button class="btn btn--secondary" id="heroSlidesUploadBtn" type="button">Upload Multiple Slide Images</button><button class="btn btn--primary" id="saveConfigBtn3" type="button">Save Website Settings</button></div></div><div class="admin-card"><h3>Homepage Slideshow Images</h3><p class="admin-note">Upload two or more images here to make the homepage hero background change automatically.</p><div class="media-list" id="heroSlidesAdmin"></div></div></div>
+                        <div class="admin-panel" id="panel-about"><div class="admin-card"><h3>About Section</h3><div class="admin-grid"><div class="admin-field"><label>About Title</label><input data-config-path="about.title"></div><div class="admin-field admin-field--full"><label>About Subtitle</label><textarea rows="3" data-config-path="about.subtitle"></textarea></div></div><h3 style="margin-top:20px;">About Cards</h3><div class="admin-list" id="aboutCardsAdmin"></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn4" type="button">Save Website Settings</button></div></div></div>
+                        <div class="admin-panel" id="panel-principal"><div class="admin-card"><h3>Principal Editing Section</h3><div class="admin-grid"><div class="admin-field"><label>Principal Name</label><input data-config-path="principal.name"></div><div class="admin-field"><label>Principal Title</label><input data-config-path="principal.title"></div><div class="admin-field"><label>Principal Email</label><input data-config-path="principal.email"></div><div class="admin-field"><label>Principal Phone</label><input data-config-path="principal.phone"></div><div class="admin-field admin-field--full"><label>Principal Message</label><textarea rows="5" data-config-path="principal.message"></textarea></div><div class="admin-field admin-field--full"><label>Principal Photo URL</label><input data-config-path="principal.photoUrl"><div class="admin-actions"><input type="file" id="principalUpload" accept="image/*"><button class="btn btn--secondary btn--sm" data-upload-target="principal.photoUrl" data-file-input="principalUpload" type="button">Upload Principal Photo</button></div></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtnPrincipal" type="button">Save Website Settings</button></div></div></div>
                         <div class="admin-panel" id="panel-academics"><div class="admin-card"><h3>Academics Section</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input data-config-path="academics.title"></div><div class="admin-field admin-field--full"><label>Subtitle</label><textarea rows="3" data-config-path="academics.subtitle"></textarea></div></div><h3 style="margin-top:20px;">Programme Cards</h3><div class="admin-list" id="academicsAdmin"></div><div class="admin-actions"><button class="btn btn--secondary" id="addAcademicBtn" type="button">Add Programme</button><button class="btn btn--primary" id="saveConfigBtn5" type="button">Save Website Settings</button></div></div></div>
                         <div class="admin-panel" id="panel-admissions"><div class="admin-card"><h3>Admissions Section</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input data-config-path="admissions.title"></div><div class="admin-field admin-field--full"><label>Subtitle</label><textarea rows="3" data-config-path="admissions.subtitle"></textarea></div><div class="admin-field"><label>Prospectus Button Text</label><input data-config-path="admissions.prospectusText"></div><div class="admin-field"><label>Prospectus URL</label><input data-config-path="admissions.prospectusUrl"></div></div><h3 style="margin-top:20px;">Admissions Steps</h3><div class="admin-list" id="admissionsStepsAdmin"></div><div class="admin-actions"><button class="btn btn--secondary" id="addStepBtn" type="button">Add Step</button><button class="btn btn--primary" id="saveConfigBtn6" type="button">Save Website Settings</button></div></div></div>
                         <div class="admin-panel" id="panel-events"><div class="admin-card"><h3>Event Management</h3><div class="admin-grid"><div class="admin-field"><label>Event Title</label><input id="eventTitle"></div><div class="admin-field"><label>Event Date</label><input type="date" id="eventDate"></div><div class="admin-field admin-field--full"><label>Description</label><textarea rows="3" id="eventDescription"></textarea></div><div class="admin-field admin-field--full"><label>Image URL</label><input id="eventImageUrl"><div class="admin-actions"><input type="file" id="eventUpload" accept="image/*"><button class="btn btn--secondary btn--sm" id="eventUploadBtn" type="button">Upload Event Image</button></div></div><div class="admin-field"><label>Active</label><select id="eventActive"><option value="true">Active</option><option value="false">Inactive</option></select></div><div class="admin-field"><label>Sort Order</label><input type="number" id="eventSortOrder" value="0"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveEventBtn" type="button">Add Event</button><button class="btn btn--secondary" id="clearEventBtn" type="button">Clear Form</button><button class="btn btn--secondary" id="loadEventsAdminBtn" type="button">Refresh Events</button></div></div><div class="admin-card"><h3>Existing Events</h3><div id="eventsAdminList"></div></div></div>
-                        <div class="admin-panel" id="panel-gallery"><div class="admin-card"><h3>Gallery Management</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input id="galleryTitle"></div><div class="admin-field"><label>Alt Text</label><input id="galleryAlt"></div><div class="admin-field admin-field--full"><label>Image URL</label><input id="galleryImageUrl"><div class="admin-actions"><input type="file" id="galleryUpload" accept="image/*"><button class="btn btn--secondary btn--sm" id="galleryUploadBtn" type="button">Upload Gallery Image</button></div></div><div class="admin-field"><label>Active</label><select id="galleryActive"><option value="true">Active</option><option value="false">Inactive</option></select></div><div class="admin-field"><label>Sort Order</label><input type="number" id="gallerySortOrder" value="0"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveGalleryBtn" type="button">Add Gallery Item</button><button class="btn btn--secondary" id="clearGalleryBtn" type="button">Clear Form</button><button class="btn btn--secondary" id="loadGalleryAdminBtn" type="button">Refresh Gallery</button></div></div><div class="admin-card"><h3>Existing Gallery</h3><div id="galleryAdminList"></div></div></div>
+                        <div class="admin-panel" id="panel-gallery"><div class="admin-card"><h3>Gallery Management</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input id="galleryTitle"></div><div class="admin-field"><label>Alt Text</label><input id="galleryAlt"></div><div class="admin-field admin-field--full"><label>Image URL</label><input id="galleryImageUrl"><div class="admin-actions"><input type="file" id="galleryUpload" accept="image/*"><button class="btn btn--secondary btn--sm" id="galleryUploadBtn" type="button">Upload Gallery Image</button></div></div><div class="admin-field"><label>Active</label><select id="galleryActive"><option value="true">Active</option><option value="false">Inactive</option></select></div><div class="admin-field"><label>Sort Order</label><input type="number" id="gallerySortOrder" value="0"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveGalleryBtn" type="button">Add Gallery Item</button><button class="btn btn--secondary" id="clearGalleryBtn" type="button">Clear Form</button><button class="btn btn--secondary" id="loadGalleryAdminBtn" type="button">Refresh Gallery</button></div></div><div class="admin-card"><h3>Multiple Gallery Image Upload</h3><p class="admin-note">Select several images at once and the system will upload them and add them directly to the live gallery.</p><div class="admin-actions"><input type="file" id="galleryMultipleUpload" accept="image/*" multiple><button class="btn btn--secondary" id="galleryMultipleUploadBtn" type="button">Upload Multiple Gallery Images</button></div></div><div class="admin-card"><h3>Existing Gallery</h3><div id="galleryAdminList"></div></div></div>
                         <div class="admin-panel" id="panel-news"><div class="admin-card"><h3>News & Announcements</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input id="newsTitleInput"></div><div class="admin-field"><label>Publish Date</label><input type="date" id="newsDateInput"></div><div class="admin-field admin-field--full"><label>Body</label><textarea rows="3" id="newsBodyInput"></textarea></div><div class="admin-field admin-field--full"><label>Image URL</label><input id="newsImageInput"><div class="admin-actions"><input type="file" id="newsUpload" accept="image/*"><button class="btn btn--secondary btn--sm" id="newsUploadBtn" type="button">Upload News Image</button></div></div><div class="admin-field"><label>Active</label><select id="newsActiveInput"><option value="true">Active</option><option value="false">Inactive</option></select></div><div class="admin-field"><label>Sort Order</label><input type="number" id="newsSortInput" value="0"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveNewsBtn" type="button">Add Announcement</button><button class="btn btn--secondary" id="clearNewsBtn" type="button">Clear Form</button><button class="btn btn--secondary" id="loadNewsAdminBtn" type="button">Refresh News</button></div></div><div class="admin-card"><h3>Existing News</h3><div id="newsAdminList"></div></div></div>
                         <div class="admin-panel" id="panel-enquiries"><div class="admin-card"><h3>Enquiries Management</h3><div class="admin-grid"><div class="admin-field"><label>Filter</label><select id="enquiryFilter"><option value="all">All</option><option value="admissions">Admissions</option><option value="contact">Contact</option><option value="unread">Unread</option><option value="responded">Responded</option></select></div></div><div class="admin-actions"><button class="btn btn--secondary" id="loadEnquiriesBtn" type="button">Load Enquiries</button><button class="btn btn--secondary" id="exportEnquiriesBtn" type="button">Export CSV</button></div></div><div class="admin-card"><h3>Messages</h3><div id="enquiriesAdminList"></div></div></div>
                         <div class="admin-panel" id="panel-contact"><div class="admin-card"><h3>Contact and Google Map</h3><div class="admin-grid"><div class="admin-field admin-field--full"><label>Address</label><textarea rows="3" data-config-path="contact.address"></textarea></div><div class="admin-field"><label>Phone</label><input data-config-path="contact.phone"></div><div class="admin-field"><label>Email</label><input data-config-path="contact.email"></div><div class="admin-field"><label>WhatsApp</label><input data-config-path="contact.whatsapp"></div><div class="admin-field admin-field--full"><label>Google Maps Embed URL</label><input data-config-path="contact.mapEmbedUrl"></div></div></div><div class="admin-card"><h3>SEO and Social Sharing</h3><div class="admin-grid"><div class="admin-field"><label>Page Title</label><input data-config-path="seo.pageTitle"></div><div class="admin-field"><label>Keywords</label><input data-config-path="seo.keywords"></div><div class="admin-field admin-field--full"><label>Meta Description</label><textarea rows="3" data-config-path="seo.description"></textarea></div><div class="admin-field"><label>Open Graph Title</label><input data-config-path="seo.ogTitle"></div><div class="admin-field"><label>Open Graph Image URL</label><input data-config-path="seo.ogImage"></div><div class="admin-field admin-field--full"><label>Open Graph Description</label><textarea rows="3" data-config-path="seo.ogDescription"></textarea></div><div class="admin-field"><label>Facebook URL</label><input data-config-path="social.facebook"></div><div class="admin-field"><label>X/Twitter URL</label><input data-config-path="social.twitter"></div><div class="admin-field"><label>Instagram URL</label><input data-config-path="social.instagram"></div><div class="admin-field"><label>YouTube URL</label><input data-config-path="social.youtube"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn7" type="button">Save Website Settings</button></div></div></div>
@@ -459,9 +481,9 @@
                 storageBucket: 'school-website-assets',
                 school: { name: 'Greenfield Academy', logoInitials: 'GA', logoUrl: '', establishedText: 'Est. 1995 • Excellence in Education', motto: 'Nurturing Minds, Growing Futures' },
                 theme: { primary: '#3A7D44', primaryDark: '#2D6235', primaryLight: '#5B9A5F', accent: '#F0A04B', accentHover: '#D98A35', headerBackground: '#FFFFFF', footerBackground: '#263028' },
-                hero: { tag: 'Est. 1995 • Excellence in Education', title: 'Nurturing Minds,\nGrowing Futures', subtitle: 'Welcome to Greenfield Academy, a vibrant learning community where curiosity thrives, character blooms, and every student is empowered to reach their fullest potential.', primaryCtaText: 'Admissions Open', primaryCtaLink: '#admissions', secondaryCtaText: 'Virtual Tour', secondaryCtaLink: '#gallery', backgroundImageUrl: '' },
+                hero: { tag: 'Est. 1995 • Excellence in Education', title: 'Nurturing Minds,\nGrowing Futures', subtitle: 'Welcome to Greenfield Academy, a vibrant learning community where curiosity thrives, character blooms, and every student is empowered to reach their fullest potential.', primaryCtaText: 'Admissions Open', primaryCtaLink: '#admissions', secondaryCtaText: 'Virtual Tour', secondaryCtaLink: '#gallery', backgroundImageUrl: '', backgroundImages: [], slideIntervalSeconds: 5 },
                 about: { title: 'About Greenfield Academy', subtitle: 'For nearly three decades, we have been dedicated to fostering academic excellence, personal growth, and a lifelong love of learning.', cards: [ { icon: '🎯', title: 'Our Mission', text: 'To provide a holistic education that ignites intellectual curiosity, builds resilience, and prepares students to thrive with confidence and compassion.' }, { icon: '🌟', title: 'Our Vision', text: 'To be a beacon of progressive education where innovative teaching meets timeless values.' }, { icon: '🤝', title: 'Core Values', text: 'Respect, integrity, curiosity, resilience, and community guide everything we do inside the classroom and beyond.' } ] },
-                principal: { name: 'The Principal', title: 'Principal’s Welcome', message: 'Welcome to our school community. We are committed to creating a caring, disciplined, and inspiring environment where every learner can grow academically and morally.', photoUrl: '' },
+                principal: { name: 'The Principal', title: 'Principal’s Welcome', message: 'Welcome to our school community. We are committed to creating a caring, disciplined, and inspiring environment where every learner can grow academically and morally.', photoUrl: '', email: '', phone: '' },
                 academics: { title: 'Our Curriculum', subtitle: 'A rich, balanced programme designed to spark curiosity and develop well-rounded, future-ready learners.', cards: [ { icon: '🔬', title: 'STEM', text: 'Hands-on Science, Technology, Engineering, and Mathematics with inquiry-based learning.' }, { icon: '📚', title: 'Humanities', text: 'Literature, History, Global Studies, and critical thinking for responsible citizenship.' }, { icon: '🎨', title: 'Creative Arts', text: 'Visual Arts, Music, Drama, and Design that encourage confidence and creative expression.' } ] },
                 admissions: { title: 'Admissions', subtitle: 'Joining our school is the first step on an inspiring educational journey.', prospectusText: 'Download Prospectus', prospectusUrl: '#', steps: [ { title: 'Submit an Enquiry', text: 'Fill out the form or contact us. We will send you the required admission information.' }, { title: 'Campus Visit and Tour', text: 'Visit the school, meet staff, and experience our learning environment.' }, { title: 'Application and Assessment', text: 'Complete the application form and any age-appropriate assessment.' }, { title: 'Offer and Enrolment', text: 'Successful applicants receive an offer and complete enrolment.' } ] },
                 events: { title: 'Upcoming Events', subtitle: 'Stay connected with our vibrant school community.', fallback: [ { title: 'Open Morning', date: '2026-06-22', description: 'Tour our campus, meet our faculty, and discover what makes our school special.', image_url: '', is_active: true, sort_order: 1 }, { title: 'Science Fair', date: '2026-07-08', description: 'Students showcase innovative projects and practical learning.', image_url: '', is_active: true, sort_order: 2 } ] },
@@ -486,6 +508,12 @@
             let editingGalleryId = null;
             let editingNewsId = null;
             let enquiriesCache = [];
+            let heroSlideTimer = null;
+            let heroSlideIndex = 0;
+            let adminAccessVerified = false;
+            let pendingAccessCode = '';
+            const DEFAULT_ADMIN_ACCESS_CODE = '898989@8';
+            const LOCAL_ACCESS_CODE_KEY = 'schoolWebsiteAdminAccessCode';
 
             const $ = (id) => document.getElementById(id);
             function clone(obj) { return JSON.parse(JSON.stringify(obj)); }
@@ -587,6 +615,40 @@
                 root.setProperty('--clr-header-bg', t.headerBackground || DEFAULT_CONFIG.theme.headerBackground);
                 root.setProperty('--clr-footer-bg', t.footerBackground || DEFAULT_CONFIG.theme.footerBackground);
             }
+            function getHeroSlideImages() {
+                const configuredSlides = Array.isArray(currentConfig.hero.backgroundImages) ? currentConfig.hero.backgroundImages : [];
+                const slides = configuredSlides.map(item => typeof item === 'string' ? item : item && item.url).filter(Boolean);
+                const single = currentConfig.hero.backgroundImageUrl;
+                if (single && !slides.includes(single)) slides.unshift(single);
+                return slides.filter(url => safeUrl(url));
+            }
+            function applyHeroBackground(url) {
+                const hero = $('heroSection');
+                if (!hero) return;
+                if (url) {
+                    hero.classList.add('has-image');
+                    hero.style.backgroundImage = 'linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.45)), url("' + String(url).replace(/"/g, '%22') + '")';
+                } else {
+                    hero.classList.remove('has-image');
+                    hero.style.backgroundImage = '';
+                }
+            }
+            function startHeroSlideshow() {
+                if (heroSlideTimer) clearInterval(heroSlideTimer);
+                const slides = getHeroSlideImages();
+                if (!slides.length) { applyHeroBackground(''); return; }
+                if (heroSlideIndex >= slides.length) heroSlideIndex = 0;
+                applyHeroBackground(slides[heroSlideIndex]);
+                if (slides.length > 1) {
+                    const seconds = Math.max(1, Number(currentConfig.hero.slideIntervalSeconds || 5));
+                    heroSlideTimer = setInterval(() => {
+                        const latestSlides = getHeroSlideImages();
+                        if (!latestSlides.length) { applyHeroBackground(''); return; }
+                        heroSlideIndex = (heroSlideIndex + 1) % latestSlides.length;
+                        applyHeroBackground(latestSlides[heroSlideIndex]);
+                    }, seconds * 1000);
+                }
+            }
             function renderSite() {
                 applyTheme();
                 document.title = currentConfig.seo.pageTitle || currentConfig.school.name;
@@ -601,8 +663,7 @@
                 const logoImg = $('siteLogoImg');
                 const logoText = $('siteLogoText');
                 if (currentConfig.school.logoUrl) { logoImg.src = currentConfig.school.logoUrl; logoImg.style.display = 'block'; logoText.style.display = 'none'; } else { logoImg.removeAttribute('src'); logoImg.style.display = 'none'; logoText.style.display = 'inline-flex'; }
-                const hero = $('heroSection');
-                if (currentConfig.hero.backgroundImageUrl) { hero.classList.add('has-image'); hero.style.backgroundImage = 'linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.45)), url("' + currentConfig.hero.backgroundImageUrl.replace(/"/g, '%22') + '")'; } else { hero.classList.remove('has-image'); hero.style.backgroundImage = ''; }
+                startHeroSlideshow();
                 setText('heroTag', currentConfig.hero.tag);
                 $('heroHeading').innerHTML = String(currentConfig.hero.title || '').replace(/\n/g, '<br>');
                 setText('heroSubtitle', currentConfig.hero.subtitle);
@@ -636,7 +697,14 @@
                 const body = document.createElement('div'); const label = document.createElement('div'); label.className = 'principal__label'; label.textContent = currentConfig.principal.title || 'Principal’s Welcome';
                 const h = document.createElement('h3'); h.textContent = currentConfig.principal.name || 'The Principal';
                 const p = document.createElement('p'); p.textContent = currentConfig.principal.message || '';
-                body.append(label, h, p); wrap.append(media, body);
+                body.append(label, h, p);
+                if (currentConfig.principal.email || currentConfig.principal.phone) {
+                    const contact = document.createElement('p');
+                    contact.className = 'principal__contact';
+                    contact.textContent = [currentConfig.principal.email, currentConfig.principal.phone].filter(Boolean).join(' • ');
+                    body.appendChild(contact);
+                }
+                wrap.append(media, body);
             }
             function renderAcademics() {
                 const grid = $('academicsGrid'); grid.innerHTML = '';
@@ -786,6 +854,7 @@
                 renderArrayEditor('aboutCardsAdmin', currentConfig.about.cards, 'about.cards', ['icon','title','text']);
                 renderArrayEditor('academicsAdmin', currentConfig.academics.cards, 'academics.cards', ['icon','title','text']);
                 renderArrayEditor('admissionsStepsAdmin', currentConfig.admissions.steps, 'admissions.steps', ['title','text']);
+                renderHeroSlidesAdmin();
             }
             function renderArrayEditor(containerId, array, basePath, fields) {
                 const container = $(containerId); if (!container) return; container.innerHTML = '';
@@ -802,6 +871,79 @@
                     const actions = document.createElement('div'); actions.className = 'admin-actions'; const remove = document.createElement('button'); remove.className = 'btn btn--danger btn--sm'; remove.type = 'button'; remove.textContent = 'Remove'; remove.addEventListener('click', () => { array.splice(index, 1); renderSite(); }); actions.appendChild(remove); card.append(grid, actions); container.appendChild(card);
                 });
             }
+            function renderHeroSlidesAdmin() {
+                const wrap = $('heroSlidesAdmin');
+                if (!wrap) return;
+                if (!Array.isArray(currentConfig.hero.backgroundImages)) currentConfig.hero.backgroundImages = [];
+                wrap.innerHTML = '';
+                if (!currentConfig.hero.backgroundImages.length) {
+                    const note = document.createElement('p');
+                    note.className = 'admin-note';
+                    note.textContent = 'No slideshow images added yet. Upload multiple slide images or add the single hero background URL.';
+                    wrap.appendChild(note);
+                    return;
+                }
+                currentConfig.hero.backgroundImages.forEach((item, index) => {
+                    const url = typeof item === 'string' ? item : item.url;
+                    const row = document.createElement('div'); row.className = 'media-list-item';
+                    const img = document.createElement('img'); img.src = safeUrl(url) || ''; img.alt = 'Hero slide ' + (index + 1);
+                    const info = document.createElement('div'); const label = document.createElement('strong'); label.textContent = 'Slide ' + (index + 1); const urlText = document.createElement('div'); urlText.className = 'media-list-url'; urlText.textContent = url || ''; info.append(label, urlText);
+                    const actions = document.createElement('div'); actions.className = 'admin-actions';
+                    const up = document.createElement('button'); up.className = 'btn btn--secondary btn--sm'; up.type = 'button'; up.textContent = 'Up'; up.disabled = index === 0; up.addEventListener('click', () => { const arr = currentConfig.hero.backgroundImages; [arr[index-1], arr[index]] = [arr[index], arr[index-1]]; renderSite(); });
+                    const down = document.createElement('button'); down.className = 'btn btn--secondary btn--sm'; down.type = 'button'; down.textContent = 'Down'; down.disabled = index === currentConfig.hero.backgroundImages.length - 1; down.addEventListener('click', () => { const arr = currentConfig.hero.backgroundImages; [arr[index+1], arr[index]] = [arr[index], arr[index+1]]; renderSite(); });
+                    const remove = document.createElement('button'); remove.className = 'btn btn--danger btn--sm'; remove.type = 'button'; remove.textContent = 'Remove'; remove.addEventListener('click', () => { currentConfig.hero.backgroundImages.splice(index, 1); renderSite(); });
+                    actions.append(up, down, remove); row.append(img, info, actions); wrap.appendChild(row);
+                });
+            }
+            function addSingleHeroUrlToSlideshow() {
+                const url = safeUrl(currentConfig.hero.backgroundImageUrl || '');
+                if (!url) { adminMessage('Enter or upload a single hero image URL first.', 'error'); return; }
+                if (!Array.isArray(currentConfig.hero.backgroundImages)) currentConfig.hero.backgroundImages = [];
+                if (!currentConfig.hero.backgroundImages.some(item => (typeof item === 'string' ? item : item.url) === url)) {
+                    currentConfig.hero.backgroundImages.push({ url });
+                }
+                renderSite();
+                adminMessage('Hero image added to slideshow. Click Save Website Settings to keep it.');
+            }
+            async function uploadMultipleFiles(fileInputId) {
+                if (!supabaseClient || !adminSession) { adminMessage('Please login before uploading images.', 'error'); return []; }
+                const input = $(fileInputId);
+                const files = input && input.files ? Array.from(input.files) : [];
+                if (!files.length) { adminMessage('Select one or more image files first.', 'error'); return []; }
+                const urls = [];
+                for (const file of files) {
+                    const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '');
+                    const cleanName = file.name.replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 50);
+                    const path = 'uploads/' + new Date().getFullYear() + '/' + Date.now() + '-' + Math.random().toString(36).slice(2, 8) + '-' + cleanName + '.' + ext;
+                    const { error } = await supabaseClient.storage.from(currentConfig.storageBucket).upload(path, file, { cacheControl: '3600', upsert: false });
+                    if (error) { adminMessage('Upload failed for ' + file.name + ': ' + error.message, 'error'); continue; }
+                    const { data } = supabaseClient.storage.from(currentConfig.storageBucket).getPublicUrl(path);
+                    if (data && data.publicUrl) urls.push(data.publicUrl);
+                }
+                input.value = '';
+                return urls;
+            }
+            async function uploadHeroSlides() {
+                const urls = await uploadMultipleFiles('heroSlidesUpload');
+                if (!urls.length) return;
+                if (!Array.isArray(currentConfig.hero.backgroundImages)) currentConfig.hero.backgroundImages = [];
+                urls.forEach(url => currentConfig.hero.backgroundImages.push({ url }));
+                renderSite();
+                adminMessage(urls.length + ' homepage slideshow image(s) uploaded. Click Save Website Settings to keep them.');
+            }
+            async function uploadMultipleGalleryImages() {
+                if (!supabaseClient || !adminSession) { adminMessage('Login required.', 'error'); return; }
+                const urls = await uploadMultipleFiles('galleryMultipleUpload');
+                if (!urls.length) return;
+                const startOrder = Date.now();
+                const records = urls.map((url, index) => ({ title: 'Gallery Image ' + (index + 1), alt_text: 'School gallery image', image_url: url, is_active: true, sort_order: startOrder + index }));
+                const { error } = await supabaseClient.from('gallery').insert(records);
+                if (error) { adminMessage('Gallery records could not be saved: ' + error.message, 'error'); return; }
+                adminMessage(urls.length + ' gallery image(s) uploaded and added.');
+                await loadGalleryAdmin();
+                await loadGalleryPublic();
+            }
+
             async function uploadAsset(fileInputId, targetPathOrInputId) {
                 if (!supabaseClient || !adminSession) { adminMessage('Please login before uploading images.', 'error'); return ''; }
                 const input = $(fileInputId); const file = input && input.files && input.files[0];
@@ -816,6 +958,72 @@
                 if (targetPathOrInputId && targetPathOrInputId.includes('.')) { setPath(currentConfig, targetPathOrInputId, url); renderSite(); }
                 else if (targetPathOrInputId) { $(targetPathOrInputId).value = url; }
                 adminMessage('Image uploaded successfully.'); input.value = ''; return url;
+            }
+            function localStoredAccessCode() {
+                try { return localStorage.getItem(LOCAL_ACCESS_CODE_KEY) || DEFAULT_ADMIN_ACCESS_CODE; } catch (e) { return DEFAULT_ADMIN_ACCESS_CODE; }
+            }
+            function isValidNewAccessCode(code) {
+                return String(code || '').trim().length >= 8;
+            }
+            function showAdminCodeChange(message) {
+                $('adminCodeChangeBox').classList.add('active');
+                if (message) adminMessage(message, 'error');
+            }
+            function revealAdminLogin() {
+                adminAccessVerified = true;
+                pendingAccessCode = '';
+                $('adminAccessGate').classList.add('hidden');
+                $('adminLoginCard').classList.remove('hidden');
+                $('adminStatus').textContent = 'Access code accepted. Sign in to manage this website.';
+                checkExistingSession();
+            }
+            async function verifyAccessCodeWithServer(code) {
+                if (!supabaseClient) return null;
+                try {
+                    const { data, error } = await supabaseClient.rpc('verify_school_website_access_code', { p_site_key: currentConfig.settingsKey, p_code: code });
+                    if (error) return null;
+                    return data;
+                } catch (e) { return null; }
+            }
+            async function changeAccessCodeWithServer(currentCode, newCode) {
+                if (!supabaseClient) return null;
+                try {
+                    const { data, error } = await supabaseClient.rpc('change_school_website_access_code', { p_site_key: currentConfig.settingsKey, p_current_code: currentCode, p_new_code: newCode });
+                    if (error) throw error;
+                    return data;
+                } catch (e) { console.warn('Access code RPC unavailable or failed:', e); return null; }
+            }
+            async function verifyAdminAccessCode() {
+                await initSupabase();
+                const code = $('adminGateCode').value.trim();
+                if (!code) { adminMessage('Enter the admin access code first.', 'error'); return; }
+                pendingAccessCode = code;
+                const serverResult = await verifyAccessCodeWithServer(code);
+                if (serverResult && serverResult.ok) {
+                    if (serverResult.must_change) { showAdminCodeChange('Default or reset code accepted. Please create a new access code before login.'); return; }
+                    revealAdminLogin();
+                    return;
+                }
+                const stored = localStoredAccessCode();
+                if (code === DEFAULT_ADMIN_ACCESS_CODE) { showAdminCodeChange('Default reset code accepted. Please create a new access code before login.'); return; }
+                if (code === stored) { revealAdminLogin(); return; }
+                adminMessage('Invalid admin access code.', 'error');
+            }
+            async function changeAdminAccessCode() {
+                const newCode = $('adminNewCode').value.trim();
+                const confirmCode = $('adminConfirmCode').value.trim();
+                if (!pendingAccessCode) pendingAccessCode = $('adminGateCode').value.trim();
+                if (!isValidNewAccessCode(newCode)) { adminMessage('The new access code must contain at least 8 characters.', 'error'); return; }
+                if (newCode !== confirmCode) { adminMessage('The new access code and confirmation do not match.', 'error'); return; }
+                const serverResult = await changeAccessCodeWithServer(pendingAccessCode, newCode);
+                if (serverResult && serverResult.ok === false && supabaseClient) { adminMessage('Access code could not be changed: ' + (serverResult.message || 'Unknown error'), 'error'); return; }
+                try { localStorage.setItem(LOCAL_ACCESS_CODE_KEY, newCode); } catch (e) {}
+                $('adminGateCode').value = '';
+                $('adminNewCode').value = '';
+                $('adminConfirmCode').value = '';
+                $('adminCodeChangeBox').classList.remove('active');
+                adminMessage('New access code saved. You can now login.', 'success');
+                revealAdminLogin();
             }
             async function adminLogin() {
                 if (!supabaseClient) { adminMessage('Supabase is not configured correctly.', 'error'); return; }
@@ -837,7 +1045,7 @@
                 $('adminLoginBox').style.display = 'none'; $('adminShell').classList.add('active'); $('adminSignOutBtn').classList.remove('hidden'); $('adminRefreshBtn').classList.remove('hidden'); $('adminStatus').textContent = 'Logged in as ' + email;
                 fillConfigInputs(); renderAdminArrayEditors(); loadEventsAdmin(); loadGalleryAdmin(); loadNewsAdmin();
             }
-            async function adminSignOut() { if (supabaseClient) await supabaseClient.auth.signOut(); adminSession = null; $('adminLoginBox').style.display = 'block'; $('adminShell').classList.remove('active'); $('adminSignOutBtn').classList.add('hidden'); $('adminRefreshBtn').classList.add('hidden'); $('adminStatus').textContent = 'Sign in to manage this website.'; }
+            async function adminSignOut() { if (supabaseClient) await supabaseClient.auth.signOut(); adminSession = null; $('adminLoginBox').style.display = 'block'; $('adminShell').classList.remove('active'); $('adminSignOutBtn').classList.add('hidden'); $('adminRefreshBtn').classList.add('hidden'); if (adminAccessVerified) { $('adminAccessGate').classList.add('hidden'); $('adminLoginCard').classList.remove('hidden'); $('adminStatus').textContent = 'Access code accepted. Sign in to manage this website.'; } else { $('adminAccessGate').classList.remove('hidden'); $('adminLoginCard').classList.add('hidden'); $('adminStatus').textContent = 'Enter the private admin access code first.'; } }
             async function checkExistingSession() {
                 if (!supabaseClient) return;
                 const { data } = await supabaseClient.auth.getSession();
@@ -1028,7 +1236,7 @@
             function resetConfig() { if (!confirm('Restore the default template settings?')) return; currentConfig = clone(DEFAULT_CONFIG); renderSite(); adminMessage('Default template restored. Click Save Website Settings to store it.'); }
             function openLightbox(src, alt) { $('lightboxImg').src = src; $('lightboxImg').alt = alt || ''; $('lightbox').classList.add('active'); $('lightbox').setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; }
             function closeLightbox() { $('lightbox').classList.remove('active'); $('lightbox').setAttribute('aria-hidden','true'); document.body.style.overflow = ''; $('lightboxImg').src = ''; }
-            function openAdmin() { $('adminModal').classList.add('active'); $('adminModal').setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; checkExistingSession(); }
+            function openAdmin() { $('adminModal').classList.add('active'); $('adminModal').setAttribute('aria-hidden','false'); document.body.style.overflow = 'hidden'; if (adminAccessVerified) { checkExistingSession(); } else { $('adminAccessGate').classList.remove('hidden'); $('adminLoginCard').classList.add('hidden'); $('adminStatus').textContent = 'Enter the private admin access code first.'; } }
             function closeAdmin() { $('adminModal').classList.remove('active'); $('adminModal').setAttribute('aria-hidden','true'); document.body.style.overflow = ''; }
             function bindEvents() {
                 $('hamburger').addEventListener('click', () => { $('hamburger').classList.toggle('active'); $('mobileNav').classList.toggle('active'); });
@@ -1039,16 +1247,16 @@
                 $('admissionsForm').addEventListener('submit', e => { e.preventDefault(); submitEnquiry(e.target, 'admissions', $('admissionsSuccess'), $('admissionsError')); });
                 $('contactForm').addEventListener('submit', e => { e.preventDefault(); submitEnquiry(e.target, 'contact', $('contactSuccess'), $('contactError')); });
                 $('adminOpenBtn').addEventListener('click', openAdmin); $('adminCloseBtn').addEventListener('click', closeAdmin); $('adminModal').addEventListener('click', e => { if (e.target === $('adminModal')) closeAdmin(); });
-                $('adminLoginBtn').addEventListener('click', adminLogin); $('adminSignOutBtn').addEventListener('click', adminSignOut); $('adminRefreshBtn').addEventListener('click', async () => { await loadSettings(); renderSite(); await loadEventsPublic(); await loadGalleryPublic(); await loadNewsPublic(); adminMessage('Website content refreshed.'); });
+                $('verifyAccessCodeBtn').addEventListener('click', verifyAdminAccessCode); $('changeAccessCodeBtn').addEventListener('click', changeAdminAccessCode); $('adminGateCode').addEventListener('keydown', e => { if (e.key === 'Enter') verifyAdminAccessCode(); }); $('adminNewCode').addEventListener('keydown', e => { if (e.key === 'Enter') changeAdminAccessCode(); }); $('adminLoginBtn').addEventListener('click', adminLogin); $('adminSignOutBtn').addEventListener('click', adminSignOut); $('adminRefreshBtn').addEventListener('click', async () => { await loadSettings(); renderSite(); await loadEventsPublic(); await loadGalleryPublic(); await loadNewsPublic(); adminMessage('Website content refreshed.'); });
                 document.querySelectorAll('.admin-tab').forEach(tab => tab.addEventListener('click', () => { document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active')); tab.classList.add('active'); $(tab.dataset.panel).classList.add('active'); }));
                 bindConfigInputs();
                 document.querySelectorAll('[id^="saveConfigBtn"]').forEach(btn => btn.addEventListener('click', saveSettings));
                 document.querySelectorAll('[data-upload-target]').forEach(btn => btn.addEventListener('click', () => uploadAsset(btn.dataset.fileInput, btn.dataset.uploadTarget)));
-                $('applyPresetBtn').addEventListener('click', () => { currentConfig.theme = clone(THEME_PRESETS[$('themePresetSelect').value] || THEME_PRESETS.green); renderSite(); });
+                $('applyPresetBtn').addEventListener('click', () => { currentConfig.theme = clone(THEME_PRESETS[$('themePresetSelect').value] || THEME_PRESETS.green); renderSite(); }); $('addHeroImageUrlBtn').addEventListener('click', addSingleHeroUrlToSlideshow); $('heroSlidesUploadBtn').addEventListener('click', uploadHeroSlides);
                 $('addAcademicBtn').addEventListener('click', () => { currentConfig.academics.cards.push({ icon:'📘', title:'New Programme', text:'Programme description.' }); renderSite(); });
                 $('addStepBtn').addEventListener('click', () => { currentConfig.admissions.steps.push({ title:'New Step', text:'Step description.' }); renderSite(); });
                 $('eventUploadBtn').addEventListener('click', () => uploadAsset('eventUpload', 'eventImageUrl')); $('saveEventBtn').addEventListener('click', saveEvent); $('clearEventBtn').addEventListener('click', clearEventForm); $('loadEventsAdminBtn').addEventListener('click', loadEventsAdmin);
-                $('galleryUploadBtn').addEventListener('click', () => uploadAsset('galleryUpload', 'galleryImageUrl')); $('saveGalleryBtn').addEventListener('click', saveGallery); $('clearGalleryBtn').addEventListener('click', clearGalleryForm); $('loadGalleryAdminBtn').addEventListener('click', loadGalleryAdmin);
+                $('galleryUploadBtn').addEventListener('click', () => uploadAsset('galleryUpload', 'galleryImageUrl')); $('galleryMultipleUploadBtn').addEventListener('click', uploadMultipleGalleryImages); $('saveGalleryBtn').addEventListener('click', saveGallery); $('clearGalleryBtn').addEventListener('click', clearGalleryForm); $('loadGalleryAdminBtn').addEventListener('click', loadGalleryAdmin);
                 $('newsUploadBtn').addEventListener('click', () => uploadAsset('newsUpload', 'newsImageInput')); $('saveNewsBtn').addEventListener('click', saveNews); $('clearNewsBtn').addEventListener('click', clearNewsForm); $('loadNewsAdminBtn').addEventListener('click', loadNewsAdmin);
                 $('loadEnquiriesBtn').addEventListener('click', loadEnquiries); $('exportEnquiriesBtn').addEventListener('click', exportCSV);
                 $('exportConfigBtn').addEventListener('click', exportConfig); $('importConfigBtn').addEventListener('click', importConfig); $('resetConfigBtn').addEventListener('click', resetConfig);
