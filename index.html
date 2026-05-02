@@ -473,7 +473,7 @@
                         <div class="admin-panel" id="panel-gallery"><div class="admin-card"><h3>Gallery Management</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input id="galleryTitle"></div><div class="admin-field"><label>Alt Text</label><input id="galleryAlt"></div><div class="admin-field admin-field--full"><label>Image URL</label><input id="galleryImageUrl"><div class="admin-actions"><input type="file" id="galleryUpload" accept="image/*"><button class="btn btn--secondary btn--sm" id="galleryUploadBtn" type="button">Upload Gallery Image</button></div></div><div class="admin-field"><label>Active</label><select id="galleryActive"><option value="true">Active</option><option value="false">Inactive</option></select></div><div class="admin-field"><label>Sort Order</label><input type="number" id="gallerySortOrder" value="0"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveGalleryBtn" type="button">Add Gallery Item</button><button class="btn btn--secondary" id="clearGalleryBtn" type="button">Clear Form</button><button class="btn btn--secondary" id="loadGalleryAdminBtn" type="button">Refresh Gallery</button></div></div><div class="admin-card"><h3>Multiple Gallery Image Upload</h3><p class="admin-note">Select several images at once and the system will upload them and add them directly to the live gallery.</p><div class="admin-actions"><input type="file" id="galleryMultipleUpload" accept="image/*" multiple><button class="btn btn--secondary" id="galleryMultipleUploadBtn" type="button">Upload Multiple Gallery Images</button></div></div><div class="admin-card"><h3>Existing Gallery</h3><div id="galleryAdminList"></div></div></div>
                         <div class="admin-panel" id="panel-news"><div class="admin-card"><h3>News & Announcements</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input id="newsTitleInput"></div><div class="admin-field"><label>Publish Date</label><input type="date" id="newsDateInput"></div><div class="admin-field admin-field--full"><label>Body</label><textarea rows="3" id="newsBodyInput"></textarea></div><div class="admin-field admin-field--full"><label>Image URL</label><input id="newsImageInput"><div class="admin-actions"><input type="file" id="newsUpload" accept="image/*"><button class="btn btn--secondary btn--sm" id="newsUploadBtn" type="button">Upload News Image</button></div></div><div class="admin-field"><label>Active</label><select id="newsActiveInput"><option value="true">Active</option><option value="false">Inactive</option></select></div><div class="admin-field"><label>Sort Order</label><input type="number" id="newsSortInput" value="0"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveNewsBtn" type="button">Add Announcement</button><button class="btn btn--secondary" id="clearNewsBtn" type="button">Clear Form</button><button class="btn btn--secondary" id="loadNewsAdminBtn" type="button">Refresh News</button></div></div><div class="admin-card"><h3>Existing News</h3><div id="newsAdminList"></div></div></div>
                         <div class="admin-panel" id="panel-enquiries"><div class="admin-card"><h3>Enquiries Management</h3><div class="admin-grid"><div class="admin-field"><label>Filter</label><select id="enquiryFilter"><option value="all">All</option><option value="admissions">Admissions</option><option value="contact">Contact</option><option value="unread">Unread</option><option value="responded">Responded</option></select></div></div><div class="admin-actions"><button class="btn btn--secondary" id="loadEnquiriesBtn" type="button">Load Enquiries</button><button class="btn btn--secondary" id="exportEnquiriesBtn" type="button">Export CSV</button></div></div><div class="admin-card"><h3>Messages</h3><div id="enquiriesAdminList"></div></div></div>
-                        <div class="admin-panel" id="panel-contact"><div class="admin-card"><h3>Contact and Google Map</h3><div class="admin-grid"><div class="admin-field admin-field--full"><label>Address</label><textarea rows="3" data-config-path="contact.address"></textarea></div><div class="admin-field"><label>Phone</label><input data-config-path="contact.phone"></div><div class="admin-field"><label>Email</label><input data-config-path="contact.email"></div><div class="admin-field"><label>WhatsApp</label><input data-config-path="contact.whatsapp"></div><div class="admin-field admin-field--full"><label>Google Maps Embed URL or Iframe Code</label><textarea rows="4" data-config-path="contact.mapEmbedUrl" placeholder="Paste the full Google Maps iframe code or only the src URL from Share > Embed a map"></textarea><p class="admin-note">Use Google Maps, Share, Embed a map, Copy HTML. The system will extract and save only the safe map URL.</p></div></div></div><div class="admin-card"><h3>SEO and Social Sharing</h3><div class="admin-grid"><div class="admin-field"><label>Page Title</label><input data-config-path="seo.pageTitle"></div><div class="admin-field"><label>Keywords</label><input data-config-path="seo.keywords"></div><div class="admin-field admin-field--full"><label>Meta Description</label><textarea rows="3" data-config-path="seo.description"></textarea></div><div class="admin-field"><label>Open Graph Title</label><input data-config-path="seo.ogTitle"></div><div class="admin-field"><label>Share Preview Image URL</label><input data-config-path="seo.ogImage"><p class="admin-note">Use the homepage hero image URL here. If this field is empty, the site automatically uses the first homepage slideshow image or single hero image for the share preview.</p></div><div class="admin-field admin-field--full"><label>Open Graph Description</label><textarea rows="3" data-config-path="seo.ogDescription"></textarea></div><div class="admin-field"><label>Facebook URL</label><input data-config-path="social.facebook"></div><div class="admin-field"><label>X/Twitter URL</label><input data-config-path="social.twitter"></div><div class="admin-field"><label>Instagram URL</label><input data-config-path="social.instagram"></div><div class="admin-field"><label>YouTube URL</label><input data-config-path="social.youtube"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn7" type="button">Save Website Settings</button></div></div></div>
+                        <div class="admin-panel" id="panel-contact"><div class="admin-card"><h3>Contact and Google Map</h3><div class="admin-grid"><div class="admin-field admin-field--full"><label>Address</label><textarea rows="3" data-config-path="contact.address"></textarea></div><div class="admin-field"><label>Phone</label><input data-config-path="contact.phone"></div><div class="admin-field"><label>Email</label><input data-config-path="contact.email"></div><div class="admin-field"><label>WhatsApp</label><input data-config-path="contact.whatsapp"></div><div class="admin-field admin-field--full"><label>Google Maps Embed URL or Iframe Code</label><textarea rows="4" data-config-path="contact.mapEmbedUrl" placeholder="Paste the full Google Maps iframe code or only the src URL from Share > Embed a map"></textarea><p class="admin-note">Use Google Maps, Share, Embed a map, Copy HTML. The system will extract and save only the safe map URL.</p></div></div></div><div class="admin-card"><h3>SEO and Social Sharing</h3><div class="admin-grid"><div class="admin-field"><label>Page Title</label><input data-config-path="seo.pageTitle"></div><div class="admin-field"><label>Keywords</label><input data-config-path="seo.keywords"></div><div class="admin-field admin-field--full"><label>Meta Description</label><textarea rows="3" data-config-path="seo.description"></textarea></div><div class="admin-field"><label>Open Graph Title</label><input data-config-path="seo.ogTitle"><p class="admin-note">This follows the School Name automatically when settings are saved.</p></div><div class="admin-field"><label>Share Preview Image URL</label><input data-config-path="seo.ogImage"><p class="admin-note">Leave empty to use the first homepage slideshow image or single hero image automatically for the share preview.</p></div><div class="admin-field admin-field--full"><label>Open Graph Description</label><textarea rows="3" data-config-path="seo.ogDescription"></textarea><p class="admin-note">This follows the School Motto automatically when settings are saved.</p></div><div class="admin-field"><label>Facebook URL</label><input data-config-path="social.facebook"></div><div class="admin-field"><label>X/Twitter URL</label><input data-config-path="social.twitter"></div><div class="admin-field"><label>Instagram URL</label><input data-config-path="social.instagram"></div><div class="admin-field"><label>YouTube URL</label><input data-config-path="social.youtube"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn7" type="button">Save Website Settings</button></div></div></div>
                         <div class="admin-panel" id="panel-backup"><div class="admin-card"><h3>Backup and Restore</h3><p>Export the current website settings before making major changes. You can import the backup later if needed.</p><div class="admin-actions"><button class="btn btn--secondary" id="exportConfigBtn" type="button">Export Settings JSON</button><input type="file" id="importConfigFile" accept="application/json"><button class="btn btn--secondary" id="importConfigBtn" type="button">Import Settings JSON</button><button class="btn btn--danger" id="resetConfigBtn" type="button">Restore Default Template</button></div></div></div>
                     </section>
                 </div>
@@ -683,21 +683,64 @@
                 const logo = safeUrl(currentConfig.school && currentConfig.school.logoUrl ? currentConfig.school.logoUrl : '');
                 return logo && !logo.startsWith('#') ? logo : '';
             }
-            function hasOldTemplateSeo(value) {
-                return /Greenfield Academy/i.test(String(value || ''));
+            function cleanText(value) {
+                return String(value || '').replace(/\s+/g, ' ').trim();
+            }
+            function replaceKnownSchoolNames(value, schoolName) {
+                return String(value || '')
+                    .replace(/Greenfield Academy/gi, schoolName)
+                    .replace(/Frihans Educational Complex/gi, schoolName)
+                    .replace(/Frihans Education Complex/gi, schoolName);
+            }
+            function getSiteSchoolName() {
+                const name = currentConfig.school && currentConfig.school.name ? cleanText(currentConfig.school.name) : '';
+                return name || 'School Website';
+            }
+            function getSiteMotto() {
+                const motto = currentConfig.school && currentConfig.school.motto ? cleanText(currentConfig.school.motto) : '';
+                return motto || 'Nurturing Minds, Growing Futures';
+            }
+            function normalizeIdentityDependentText() {
+                const schoolName = getSiteSchoolName();
+                [
+                    'hero.subtitle',
+                    'about.title',
+                    'contact.address',
+                    'footer.bottomText'
+                ].forEach(path => {
+                    const value = getPath(currentConfig, path);
+                    if (value) setPath(currentConfig, path, replaceKnownSchoolNames(value, schoolName));
+                });
+            }
+            function buildIdentitySeo() {
+                normalizeIdentityDependentText();
+                const schoolName = getSiteSchoolName();
+                const motto = getSiteMotto();
+                const heroSubtitle = currentConfig.hero && currentConfig.hero.subtitle ? cleanText(currentConfig.hero.subtitle) : '';
+                const description = replaceKnownSchoolNames(heroSubtitle || (schoolName + ' is a vibrant learning community focused on academic excellence, character formation, and future-ready education.'), schoolName);
+                return {
+                    pageTitle: motto ? schoolName + ' | ' + motto : schoolName,
+                    description: description,
+                    keywords: schoolName + ', school, admissions, academics, education',
+                    ogTitle: schoolName,
+                    ogDescription: motto || description
+                };
             }
             function syncSocialPreviewDefaults() {
                 if (!currentConfig.seo || typeof currentConfig.seo !== 'object') currentConfig.seo = {};
-                const schoolName = currentConfig.school && currentConfig.school.name ? currentConfig.school.name : 'Frihans Educational Complex';
-                const motto = currentConfig.school && currentConfig.school.motto ? currentConfig.school.motto : 'Nurturing Minds, Growing Futures';
-                const description = currentConfig.hero && currentConfig.hero.subtitle ? currentConfig.hero.subtitle : (currentConfig.seo.description || motto);
-                if (!currentConfig.seo.pageTitle || hasOldTemplateSeo(currentConfig.seo.pageTitle)) currentConfig.seo.pageTitle = schoolName + ' | ' + motto;
-                if (!currentConfig.seo.description || hasOldTemplateSeo(currentConfig.seo.description)) currentConfig.seo.description = description;
-                if (!currentConfig.seo.keywords || hasOldTemplateSeo(currentConfig.seo.keywords)) currentConfig.seo.keywords = schoolName + ', school, admissions, academics, education';
-                if (!currentConfig.seo.ogTitle || hasOldTemplateSeo(currentConfig.seo.ogTitle)) currentConfig.seo.ogTitle = schoolName;
-                if (!currentConfig.seo.ogDescription || hasOldTemplateSeo(currentConfig.seo.ogDescription)) currentConfig.seo.ogDescription = motto || description;
-                const previewImage = getHomepagePreviewImage();
-                if ((!currentConfig.seo.ogImage || currentConfig.seo.ogImage === '#') && previewImage) currentConfig.seo.ogImage = previewImage;
+                const identitySeo = buildIdentitySeo();
+                currentConfig.seo.pageTitle = identitySeo.pageTitle;
+                currentConfig.seo.description = identitySeo.description;
+                currentConfig.seo.keywords = identitySeo.keywords;
+                currentConfig.seo.ogTitle = identitySeo.ogTitle;
+                currentConfig.seo.ogDescription = identitySeo.ogDescription;
+                if (currentConfig.seo.ogImage) currentConfig.seo.ogImage = safeUrl(currentConfig.seo.ogImage) || '';
+            }
+            function refreshSeoInputs() {
+                document.querySelectorAll('[data-config-path^="seo."]').forEach(input => {
+                    const value = getPath(currentConfig, input.dataset.configPath);
+                    input.value = value || '';
+                });
             }
             function applyHeroBackground(url) {
                 const hero = $('heroSection');
@@ -729,7 +772,7 @@
             function renderSite() {
                 syncSocialPreviewDefaults();
                 applyTheme();
-                const shareTitle = currentConfig.seo.ogTitle || currentConfig.school.name || 'Frihans Educational Complex';
+                const shareTitle = getSiteSchoolName();
                 const shareDescription = currentConfig.seo.ogDescription || currentConfig.hero.subtitle || currentConfig.seo.description || '';
                 const shareImage = getHomepagePreviewImage();
                 const pageUrl = window.location.href.split('#')[0];
@@ -777,7 +820,7 @@
                 setText('newsHeading', currentConfig.announcements.title); setText('newsSubtitle', currentConfig.announcements.subtitle);
                 setText('galleryHeading', currentConfig.gallery.title); setText('gallerySubtitle', currentConfig.gallery.subtitle);
                 setText('contactHeading', currentConfig.contact.title); setText('contactSubtitle', currentConfig.contact.subtitle); renderContact();
-                setText('footerSchoolName', currentConfig.school.name); setText('footerDescription', currentConfig.footer.description); setText('footerBottomText', currentConfig.footer.bottomText.replace(/Frihans Educational Complex/g, currentConfig.school.name)); renderSocial();
+                setText('footerSchoolName', currentConfig.school.name); setText('footerDescription', currentConfig.footer.description); setText('footerBottomText', replaceKnownSchoolNames(currentConfig.footer.bottomText, getSiteSchoolName())); renderSocial();
                 fillConfigInputs(); renderAdminArrayEditors(); renderProspectusStatus();
             }
             function renderAboutCards() {
@@ -969,7 +1012,14 @@
             }
             function bindConfigInputs() {
                 document.querySelectorAll('[data-config-path]').forEach(input => {
-                    input.addEventListener('input', () => { setPath(currentConfig, input.dataset.configPath, input.value); renderSite(); });
+                    input.addEventListener('input', () => {
+                        setPath(currentConfig, input.dataset.configPath, input.value);
+                        if (['school.name', 'school.motto', 'hero.subtitle'].includes(input.dataset.configPath)) {
+                            syncSocialPreviewDefaults();
+                            refreshSeoInputs();
+                        }
+                        renderSite();
+                    });
                     if (input.dataset.configPath === 'contact.mapEmbedUrl') {
                         input.addEventListener('blur', () => {
                             const normalizedMapUrl = normalizeGoogleMapsEmbedInput(input.value);
