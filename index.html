@@ -322,7 +322,7 @@
                 <div class="admissions-wrapper">
                     <div>
                         <ol class="steps-list" id="admissionsSteps"></ol>
-                        <div style="text-align:center; margin-top: 20px;"><a class="btn btn--accent" id="prospectusBtn" href="#" target="_blank" rel="noopener">Download Prospectus</a></div>
+                        <div style="text-align:center; margin-top: 20px;"><a class="btn btn--accent" id="prospectusBtn" href="#" target="_blank" rel="noopener" download>Download Prospectus</a></div>
                     </div>
                     <div class="form-card">
                         <h3>Enquire Now</h3>
@@ -460,7 +460,7 @@
                         <div class="admin-panel" id="panel-about"><div class="admin-card"><h3>About Section</h3><div class="admin-grid"><div class="admin-field"><label>About Title</label><input data-config-path="about.title"></div><div class="admin-field admin-field--full"><label>About Subtitle</label><textarea rows="3" data-config-path="about.subtitle"></textarea></div></div><h3 style="margin-top:20px;">About Cards</h3><div class="admin-list" id="aboutCardsAdmin"></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtn4" type="button">Save Website Settings</button></div></div></div>
                         <div class="admin-panel" id="panel-principal"><div class="admin-card"><h3>Principal Editing Section</h3><div class="admin-grid"><div class="admin-field"><label>Principal Name</label><input data-config-path="principal.name"></div><div class="admin-field"><label>Principal Title</label><input data-config-path="principal.title"></div><div class="admin-field"><label>Principal Email</label><input data-config-path="principal.email"></div><div class="admin-field"><label>Principal Phone</label><input data-config-path="principal.phone"></div><div class="admin-field admin-field--full"><label>Principal Message</label><textarea rows="5" data-config-path="principal.message"></textarea></div><div class="admin-field admin-field--full"><label>Principal Photo URL</label><input data-config-path="principal.photoUrl"><div class="admin-actions"><input type="file" id="principalUpload" accept="image/*"><button class="btn btn--secondary btn--sm" data-upload-target="principal.photoUrl" data-file-input="principalUpload" type="button">Upload Principal Photo</button></div></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveConfigBtnPrincipal" type="button">Save Website Settings</button></div></div></div>
                         <div class="admin-panel" id="panel-academics"><div class="admin-card"><h3>Academics Section</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input data-config-path="academics.title"></div><div class="admin-field admin-field--full"><label>Subtitle</label><textarea rows="3" data-config-path="academics.subtitle"></textarea></div></div><h3 style="margin-top:20px;">Programme Cards</h3><div class="admin-list" id="academicsAdmin"></div><div class="admin-actions"><button class="btn btn--secondary" id="addAcademicBtn" type="button">Add Programme</button><button class="btn btn--primary" id="saveConfigBtn5" type="button">Save Website Settings</button></div></div></div>
-                        <div class="admin-panel" id="panel-admissions"><div class="admin-card"><h3>Admissions Section</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input data-config-path="admissions.title"></div><div class="admin-field admin-field--full"><label>Subtitle</label><textarea rows="3" data-config-path="admissions.subtitle"></textarea></div><div class="admin-field"><label>Prospectus Button Text</label><input data-config-path="admissions.prospectusText"></div><div class="admin-field"><label>Prospectus URL</label><input data-config-path="admissions.prospectusUrl"></div></div><h3 style="margin-top:20px;">Admissions Steps</h3><div class="admin-list" id="admissionsStepsAdmin"></div><div class="admin-actions"><button class="btn btn--secondary" id="addStepBtn" type="button">Add Step</button><button class="btn btn--primary" id="saveConfigBtn6" type="button">Save Website Settings</button></div></div></div>
+                        <div class="admin-panel" id="panel-admissions"><div class="admin-card"><h3>Admissions Section</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input data-config-path="admissions.title"></div><div class="admin-field admin-field--full"><label>Subtitle</label><textarea rows="3" data-config-path="admissions.subtitle"></textarea></div><div class="admin-field"><label>Prospectus Button Text</label><input data-config-path="admissions.prospectusText"></div><div class="admin-field admin-field--full"><label>Prospectus URL</label><input data-config-path="admissions.prospectusUrl"><p class="admin-note">This URL is updated automatically when you upload a PDF or DOCX prospectus below.</p></div><div class="admin-field"><label>Prospectus File Name</label><input data-config-path="admissions.prospectusFileName" readonly></div><div class="admin-field"><label>Prospectus Uploaded Date</label><input data-config-path="admissions.prospectusUploadedAt" readonly></div><div class="admin-field admin-field--full"><label>Upload Prospectus File (PDF or DOCX)</label><div class="admin-actions"><input type="file" id="prospectusUpload" accept="application/pdf,.pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,.docx"><button class="btn btn--secondary btn--sm" id="prospectusUploadBtn" type="button">Upload Prospectus</button></div><p class="admin-note" id="prospectusUploadStatus">Upload the latest school prospectus here so public visitors can download it from the Admissions section.</p></div></div><h3 style="margin-top:20px;">Admissions Steps</h3><div class="admin-list" id="admissionsStepsAdmin"></div><div class="admin-actions"><button class="btn btn--secondary" id="addStepBtn" type="button">Add Step</button><button class="btn btn--primary" id="saveConfigBtn6" type="button">Save Website Settings</button></div></div></div>
                         <div class="admin-panel" id="panel-events"><div class="admin-card"><h3>Event Management</h3><div class="admin-grid"><div class="admin-field"><label>Event Title</label><input id="eventTitle"></div><div class="admin-field"><label>Event Date</label><input type="date" id="eventDate"></div><div class="admin-field admin-field--full"><label>Description</label><textarea rows="3" id="eventDescription"></textarea></div><div class="admin-field admin-field--full"><label>Image URL</label><input id="eventImageUrl"><div class="admin-actions"><input type="file" id="eventUpload" accept="image/*"><button class="btn btn--secondary btn--sm" id="eventUploadBtn" type="button">Upload Event Image</button></div></div><div class="admin-field"><label>Active</label><select id="eventActive"><option value="true">Active</option><option value="false">Inactive</option></select></div><div class="admin-field"><label>Sort Order</label><input type="number" id="eventSortOrder" value="0"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveEventBtn" type="button">Add Event</button><button class="btn btn--secondary" id="clearEventBtn" type="button">Clear Form</button><button class="btn btn--secondary" id="loadEventsAdminBtn" type="button">Refresh Events</button></div></div><div class="admin-card"><h3>Existing Events</h3><div id="eventsAdminList"></div></div></div>
                         <div class="admin-panel" id="panel-gallery"><div class="admin-card"><h3>Gallery Management</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input id="galleryTitle"></div><div class="admin-field"><label>Alt Text</label><input id="galleryAlt"></div><div class="admin-field admin-field--full"><label>Image URL</label><input id="galleryImageUrl"><div class="admin-actions"><input type="file" id="galleryUpload" accept="image/*"><button class="btn btn--secondary btn--sm" id="galleryUploadBtn" type="button">Upload Gallery Image</button></div></div><div class="admin-field"><label>Active</label><select id="galleryActive"><option value="true">Active</option><option value="false">Inactive</option></select></div><div class="admin-field"><label>Sort Order</label><input type="number" id="gallerySortOrder" value="0"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveGalleryBtn" type="button">Add Gallery Item</button><button class="btn btn--secondary" id="clearGalleryBtn" type="button">Clear Form</button><button class="btn btn--secondary" id="loadGalleryAdminBtn" type="button">Refresh Gallery</button></div></div><div class="admin-card"><h3>Multiple Gallery Image Upload</h3><p class="admin-note">Select several images at once and the system will upload them and add them directly to the live gallery.</p><div class="admin-actions"><input type="file" id="galleryMultipleUpload" accept="image/*" multiple><button class="btn btn--secondary" id="galleryMultipleUploadBtn" type="button">Upload Multiple Gallery Images</button></div></div><div class="admin-card"><h3>Existing Gallery</h3><div id="galleryAdminList"></div></div></div>
                         <div class="admin-panel" id="panel-news"><div class="admin-card"><h3>News & Announcements</h3><div class="admin-grid"><div class="admin-field"><label>Title</label><input id="newsTitleInput"></div><div class="admin-field"><label>Publish Date</label><input type="date" id="newsDateInput"></div><div class="admin-field admin-field--full"><label>Body</label><textarea rows="3" id="newsBodyInput"></textarea></div><div class="admin-field admin-field--full"><label>Image URL</label><input id="newsImageInput"><div class="admin-actions"><input type="file" id="newsUpload" accept="image/*"><button class="btn btn--secondary btn--sm" id="newsUploadBtn" type="button">Upload News Image</button></div></div><div class="admin-field"><label>Active</label><select id="newsActiveInput"><option value="true">Active</option><option value="false">Inactive</option></select></div><div class="admin-field"><label>Sort Order</label><input type="number" id="newsSortInput" value="0"></div></div><div class="admin-actions"><button class="btn btn--primary" id="saveNewsBtn" type="button">Add Announcement</button><button class="btn btn--secondary" id="clearNewsBtn" type="button">Clear Form</button><button class="btn btn--secondary" id="loadNewsAdminBtn" type="button">Refresh News</button></div></div><div class="admin-card"><h3>Existing News</h3><div id="newsAdminList"></div></div></div>
@@ -485,7 +485,7 @@
                 about: { title: 'About Greenfield Academy', subtitle: 'For nearly three decades, we have been dedicated to fostering academic excellence, personal growth, and a lifelong love of learning.', cards: [ { icon: '🎯', title: 'Our Mission', text: 'To provide a holistic education that ignites intellectual curiosity, builds resilience, and prepares students to thrive with confidence and compassion.' }, { icon: '🌟', title: 'Our Vision', text: 'To be a beacon of progressive education where innovative teaching meets timeless values.' }, { icon: '🤝', title: 'Core Values', text: 'Respect, integrity, curiosity, resilience, and community guide everything we do inside the classroom and beyond.' } ] },
                 principal: { name: 'The Principal', title: 'Principal’s Welcome', message: 'Welcome to our school community. We are committed to creating a caring, disciplined, and inspiring environment where every learner can grow academically and morally.', photoUrl: '', email: '', phone: '' },
                 academics: { title: 'Our Curriculum', subtitle: 'A rich, balanced programme designed to spark curiosity and develop well-rounded, future-ready learners.', cards: [ { icon: '🔬', title: 'STEM', text: 'Hands-on Science, Technology, Engineering, and Mathematics with inquiry-based learning.' }, { icon: '📚', title: 'Humanities', text: 'Literature, History, Global Studies, and critical thinking for responsible citizenship.' }, { icon: '🎨', title: 'Creative Arts', text: 'Visual Arts, Music, Drama, and Design that encourage confidence and creative expression.' } ] },
-                admissions: { title: 'Admissions', subtitle: 'Joining our school is the first step on an inspiring educational journey.', prospectusText: 'Download Prospectus', prospectusUrl: '#', steps: [ { title: 'Submit an Enquiry', text: 'Fill out the form or contact us. We will send you the required admission information.' }, { title: 'Campus Visit and Tour', text: 'Visit the school, meet staff, and experience our learning environment.' }, { title: 'Application and Assessment', text: 'Complete the application form and any age-appropriate assessment.' }, { title: 'Offer and Enrolment', text: 'Successful applicants receive an offer and complete enrolment.' } ] },
+                admissions: { title: 'Admissions', subtitle: 'Joining our school is the first step on an inspiring educational journey.', prospectusText: 'Download Prospectus', prospectusUrl: '#', prospectusFileName: '', prospectusFileType: '', prospectusUploadedAt: '', steps: [ { title: 'Submit an Enquiry', text: 'Fill out the form or contact us. We will send you the required admission information.' }, { title: 'Campus Visit and Tour', text: 'Visit the school, meet staff, and experience our learning environment.' }, { title: 'Application and Assessment', text: 'Complete the application form and any age-appropriate assessment.' }, { title: 'Offer and Enrolment', text: 'Successful applicants receive an offer and complete enrolment.' } ] },
                 events: { title: 'Upcoming Events', subtitle: 'Stay connected with our vibrant school community.', fallback: [ { title: 'Open Morning', date: '2026-06-22', description: 'Tour our campus, meet our faculty, and discover what makes our school special.', image_url: '', is_active: true, sort_order: 1 }, { title: 'Science Fair', date: '2026-07-08', description: 'Students showcase innovative projects and practical learning.', image_url: '', is_active: true, sort_order: 2 } ] },
                 announcements: { title: 'News & Announcements', subtitle: 'Important notices, admission updates, and school community news.', fallback: [ { title: 'Admissions Open', publish_date: '2026-05-01', body: 'Applications are open for the next academic year. Interested parents may submit an enquiry online.', image_url: '', is_active: true, sort_order: 1 }, { title: 'Parent Engagement Week', publish_date: '2026-05-15', body: 'Parents are invited to meet teachers and discuss student progress.', image_url: '', is_active: true, sort_order: 2 } ] },
                 gallery: { title: 'Campus Gallery', subtitle: 'Take a peek inside our campus. Click any image to view it full-size.', fallback: [ { title: 'School Library', image_url: 'https://picsum.photos/id/20/900/650', alt_text: 'Modern school library', is_active: true, sort_order: 1 }, { title: 'Classroom Learning', image_url: 'https://picsum.photos/id/24/900/650', alt_text: 'Students learning in classroom', is_active: true, sort_order: 2 }, { title: 'Outdoor Space', image_url: 'https://picsum.photos/id/26/900/650', alt_text: 'Outdoor school space', is_active: true, sort_order: 3 } ] },
@@ -672,13 +672,22 @@
                 setText('aboutHeading', currentConfig.about.title); setText('aboutSubtitle', currentConfig.about.subtitle); renderAboutCards(); renderPrincipal();
                 setText('academicsHeading', currentConfig.academics.title); setText('academicsSubtitle', currentConfig.academics.subtitle); renderAcademics();
                 setText('admissionsHeading', currentConfig.admissions.title); setText('admissionsSubtitle', currentConfig.admissions.subtitle); renderAdmissionsSteps();
-                $('prospectusBtn').textContent = currentConfig.admissions.prospectusText || 'Download Prospectus'; $('prospectusBtn').href = safeUrl(currentConfig.admissions.prospectusUrl) || '#';
+                const prospectusUrl = safeUrl(currentConfig.admissions.prospectusUrl || '');
+                $('prospectusBtn').textContent = currentConfig.admissions.prospectusText || 'Download Prospectus';
+                $('prospectusBtn').href = prospectusUrl || '#admissions';
+                if (prospectusUrl && !prospectusUrl.startsWith('#')) {
+                    $('prospectusBtn').setAttribute('download', currentConfig.admissions.prospectusFileName || 'school-prospectus');
+                    $('prospectusBtn').setAttribute('title', 'Download ' + (currentConfig.admissions.prospectusFileName || 'school prospectus'));
+                } else {
+                    $('prospectusBtn').removeAttribute('download');
+                    $('prospectusBtn').setAttribute('title', 'Prospectus file has not been uploaded yet.');
+                }
                 setText('eventsHeading', currentConfig.events.title); setText('eventsSubtitle', currentConfig.events.subtitle);
                 setText('newsHeading', currentConfig.announcements.title); setText('newsSubtitle', currentConfig.announcements.subtitle);
                 setText('galleryHeading', currentConfig.gallery.title); setText('gallerySubtitle', currentConfig.gallery.subtitle);
                 setText('contactHeading', currentConfig.contact.title); setText('contactSubtitle', currentConfig.contact.subtitle); renderContact();
                 setText('footerSchoolName', currentConfig.school.name); setText('footerDescription', currentConfig.footer.description); setText('footerBottomText', currentConfig.footer.bottomText.replace(/Greenfield Academy/g, currentConfig.school.name)); renderSocial();
-                fillConfigInputs(); renderAdminArrayEditors();
+                fillConfigInputs(); renderAdminArrayEditors(); renderProspectusStatus();
             }
             function renderAboutCards() {
                 const grid = $('aboutCards'); grid.innerHTML = '';
@@ -871,6 +880,18 @@
                     const actions = document.createElement('div'); actions.className = 'admin-actions'; const remove = document.createElement('button'); remove.className = 'btn btn--danger btn--sm'; remove.type = 'button'; remove.textContent = 'Remove'; remove.addEventListener('click', () => { array.splice(index, 1); renderSite(); }); actions.appendChild(remove); card.append(grid, actions); container.appendChild(card);
                 });
             }
+            function renderProspectusStatus() {
+                const status = $('prospectusUploadStatus');
+                if (!status) return;
+                const fileName = currentConfig.admissions.prospectusFileName || '';
+                const uploadedAt = currentConfig.admissions.prospectusUploadedAt || '';
+                const url = safeUrl(currentConfig.admissions.prospectusUrl || '');
+                if (fileName && url && !url.startsWith('#')) {
+                    status.textContent = 'Current public prospectus: ' + fileName + (uploadedAt ? ' | Uploaded: ' + uploadedAt : '') + '. Public visitors can download it from the Admissions section.';
+                } else {
+                    status.textContent = 'No active prospectus file has been uploaded yet. Upload a PDF or DOCX to activate the public Download Prospectus button.';
+                }
+            }
             function renderHeroSlidesAdmin() {
                 const wrap = $('heroSlidesAdmin');
                 if (!wrap) return;
@@ -959,6 +980,36 @@
                 else if (targetPathOrInputId) { $(targetPathOrInputId).value = url; }
                 adminMessage('Image uploaded successfully.'); input.value = ''; return url;
             }
+            function isAllowedProspectusFile(file) {
+                if (!file) return false;
+                const name = String(file.name || '').toLowerCase();
+                const type = String(file.type || '').toLowerCase();
+                return name.endsWith('.pdf') || name.endsWith('.docx') || type === 'application/pdf' || type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+            }
+            async function uploadProspectusFile() {
+                if (!supabaseClient || !adminSession) { adminMessage('Please login before uploading a prospectus.', 'error'); return ''; }
+                const input = $('prospectusUpload');
+                const file = input && input.files && input.files[0];
+                if (!file) { adminMessage('Select a PDF or DOCX prospectus first.', 'error'); return ''; }
+                if (!isAllowedProspectusFile(file)) { adminMessage('Only PDF or DOCX prospectus files are allowed.', 'error'); return ''; }
+                const maxBytes = 20 * 1024 * 1024;
+                if (file.size > maxBytes) { adminMessage('The prospectus file is too large. Maximum size is 20MB.', 'error'); return ''; }
+                const ext = file.name.toLowerCase().endsWith('.docx') ? 'docx' : 'pdf';
+                const cleanName = file.name.replace(/\.[^.]+$/, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 70) || 'school-prospectus';
+                const path = 'prospectus/' + new Date().getFullYear() + '/' + Date.now() + '-' + cleanName + '.' + ext;
+                const { error } = await supabaseClient.storage.from(currentConfig.storageBucket).upload(path, file, { cacheControl: '3600', upsert: false, contentType: ext === 'pdf' ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+                if (error) { adminMessage('Prospectus upload failed: ' + error.message, 'error'); return ''; }
+                const { data } = supabaseClient.storage.from(currentConfig.storageBucket).getPublicUrl(path);
+                if (!data || !data.publicUrl) { adminMessage('Prospectus uploaded, but public URL could not be generated.', 'error'); return ''; }
+                currentConfig.admissions.prospectusUrl = data.publicUrl;
+                currentConfig.admissions.prospectusFileName = file.name;
+                currentConfig.admissions.prospectusFileType = ext.toUpperCase();
+                currentConfig.admissions.prospectusUploadedAt = new Date().toISOString().slice(0, 10);
+                input.value = '';
+                renderSite();
+                adminMessage('Prospectus uploaded successfully. Click Save Website Settings to publish the download link.');
+                return data.publicUrl;
+            }
             function localStoredAccessCode() {
                 try { return localStorage.getItem(LOCAL_ACCESS_CODE_KEY) || DEFAULT_ADMIN_ACCESS_CODE; } catch (e) { return DEFAULT_ADMIN_ACCESS_CODE; }
             }
@@ -1043,7 +1094,7 @@
             }
             function showAdminShell(email) {
                 $('adminLoginBox').style.display = 'none'; $('adminShell').classList.add('active'); $('adminSignOutBtn').classList.remove('hidden'); $('adminRefreshBtn').classList.remove('hidden'); $('adminStatus').textContent = 'Logged in as ' + email;
-                fillConfigInputs(); renderAdminArrayEditors(); loadEventsAdmin(); loadGalleryAdmin(); loadNewsAdmin();
+                fillConfigInputs(); renderAdminArrayEditors(); renderProspectusStatus(); loadEventsAdmin(); loadGalleryAdmin(); loadNewsAdmin();
             }
             async function adminSignOut() { if (supabaseClient) await supabaseClient.auth.signOut(); adminSession = null; $('adminLoginBox').style.display = 'block'; $('adminShell').classList.remove('active'); $('adminSignOutBtn').classList.add('hidden'); $('adminRefreshBtn').classList.add('hidden'); if (adminAccessVerified) { $('adminAccessGate').classList.add('hidden'); $('adminLoginCard').classList.remove('hidden'); $('adminStatus').textContent = 'Access code accepted. Sign in to manage this website.'; } else { $('adminAccessGate').classList.remove('hidden'); $('adminLoginCard').classList.add('hidden'); $('adminStatus').textContent = 'Enter the private admin access code first.'; } }
             async function checkExistingSession() {
@@ -1244,6 +1295,13 @@
                 window.addEventListener('scroll', () => { $('header').classList.toggle('header--scrolled', window.scrollY > 10); $('backToTop').classList.toggle('visible', window.scrollY > 300); }, { passive: true });
                 $('backToTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
                 $('lightboxClose').addEventListener('click', closeLightbox); $('lightbox').addEventListener('click', e => { if (e.target === $('lightbox')) closeLightbox(); });
+                $('prospectusBtn').addEventListener('click', e => {
+                    const url = safeUrl(currentConfig.admissions.prospectusUrl || '');
+                    if (!url || url.startsWith('#')) {
+                        e.preventDefault();
+                        alert('The prospectus file is not available yet. Please contact the school office or send an admissions enquiry.');
+                    }
+                });
                 $('admissionsForm').addEventListener('submit', e => { e.preventDefault(); submitEnquiry(e.target, 'admissions', $('admissionsSuccess'), $('admissionsError')); });
                 $('contactForm').addEventListener('submit', e => { e.preventDefault(); submitEnquiry(e.target, 'contact', $('contactSuccess'), $('contactError')); });
                 $('adminOpenBtn').addEventListener('click', openAdmin); $('adminCloseBtn').addEventListener('click', closeAdmin); $('adminModal').addEventListener('click', e => { if (e.target === $('adminModal')) closeAdmin(); });
@@ -1255,6 +1313,7 @@
                 $('applyPresetBtn').addEventListener('click', () => { currentConfig.theme = clone(THEME_PRESETS[$('themePresetSelect').value] || THEME_PRESETS.green); renderSite(); }); $('addHeroImageUrlBtn').addEventListener('click', addSingleHeroUrlToSlideshow); $('heroSlidesUploadBtn').addEventListener('click', uploadHeroSlides);
                 $('addAcademicBtn').addEventListener('click', () => { currentConfig.academics.cards.push({ icon:'📘', title:'New Programme', text:'Programme description.' }); renderSite(); });
                 $('addStepBtn').addEventListener('click', () => { currentConfig.admissions.steps.push({ title:'New Step', text:'Step description.' }); renderSite(); });
+                $('prospectusUploadBtn').addEventListener('click', uploadProspectusFile);
                 $('eventUploadBtn').addEventListener('click', () => uploadAsset('eventUpload', 'eventImageUrl')); $('saveEventBtn').addEventListener('click', saveEvent); $('clearEventBtn').addEventListener('click', clearEventForm); $('loadEventsAdminBtn').addEventListener('click', loadEventsAdmin);
                 $('galleryUploadBtn').addEventListener('click', () => uploadAsset('galleryUpload', 'galleryImageUrl')); $('galleryMultipleUploadBtn').addEventListener('click', uploadMultipleGalleryImages); $('saveGalleryBtn').addEventListener('click', saveGallery); $('clearGalleryBtn').addEventListener('click', clearGalleryForm); $('loadGalleryAdminBtn').addEventListener('click', loadGalleryAdmin);
                 $('newsUploadBtn').addEventListener('click', () => uploadAsset('newsUpload', 'newsImageInput')); $('saveNewsBtn').addEventListener('click', saveNews); $('clearNewsBtn').addEventListener('click', clearNewsForm); $('loadNewsAdminBtn').addEventListener('click', loadNewsAdmin);
